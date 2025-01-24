@@ -1,10 +1,31 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { FaPython, FaJava, FaAws, FaDocker, FaGitAlt, FaApple, FaLinux, FaGraduationCap, FaLaptopCode, FaBrain, FaServer } from 'react-icons/fa';
 import { SiJavascript, SiCplusplus, SiFlask, SiMongodb, SiHtml5, SiCss3, SiRobotframework, SiJira } from 'react-icons/si';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css'; 
 import profileImage from '../assets/images/profile.jpg';
+import { useRef } from 'react';
+
+const ScrollReveal = ({ children, delay = 0 }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{
+        duration: 0.8,
+        delay: delay,
+        ease: [0.17, 0.55, 0.55, 1]
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const About = () => {
   const skills = [
@@ -68,28 +89,25 @@ const About = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-4 py-16"
+      className="relative z-10"
     >
-      {/* Header Section */}
+      {/* Professional Summary */}
       <motion.div 
         initial={{ y: 20 }}
         animate={{ y: 0 }}
-        className="text-center mb-16"
+        className="mb-16"
       >
-        <motion.img
-          src={profileImage}
-          alt="Profile"
-          className="w-40 h-40 rounded-full mx-auto border-4 border-blue-500 shadow-lg mb-8"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
-        />
-        <h1 className="text-5xl font-bold text-white mb-6 font-orbitron tracking-wider">
-          Gorakh Sawant
-        </h1>
-        <p className="text-xl text-gray-200 max-w-3xl mx-auto font-rajdhani leading-relaxed">
-          Software Engineer specializing in automation testing and full-stack development. 
-          Passionate about creating efficient solutions and implementing robust testing strategies.
-        </p>
+        <h2 className="text-4xl font-bold text-white mb-6 font-orbitron tracking-wider text-center">
+          Professional Journey
+        </h2>
+        <div className="backdrop-blur-lg bg-white/10 p-8 rounded-2xl">
+          <p className="text-xl text-gray-200 font-rajdhani leading-relaxed">
+            With over 2 years of experience in the tech industry, I've developed a strong foundation in software development
+            and automation testing. My journey began at Wipro Technologies where I gained valuable experience in IT infrastructure
+            and system administration. Currently at Indexnine Technologies, I'm focused on developing automated testing solutions
+            and improving the quality of the applications.
+          </p>
+        </div>
       </motion.div>
 
       {/* Skills Section */}
@@ -99,32 +117,32 @@ const About = () => {
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {skills.map((skill, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className="backdrop-blur-lg bg-white/10 p-6 rounded-2xl"
-            >
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-4">
-                  {skill.icon}
+            <ScrollReveal key={index} delay={index * 0.2}>
+              <motion.div
+                whileHover={{ scale: 1.03, rotate: 2 }}
+                whileTap={{ scale: 0.98 }}
+                className="backdrop-blur-lg bg-white/10 p-6 rounded-2xl transform transition-all duration-300 hover:shadow-xl"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-4">
+                    {skill.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-4 font-tech-mono">
+                    {skill.category}
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {skill.technologies.map((tech, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-rajdhani"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-4 font-tech-mono">
-                  {skill.category}
-                </h3>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {skill.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-rajdhani"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
@@ -176,31 +194,43 @@ const About = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {languages.map((lang, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.03 }}
-              className="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="flex flex-col items-center space-y-4">
-                <div className="p-3 bg-gray-800/50 rounded-full">
-                  {lang.icon}
+            <ScrollReveal key={index} delay={index * 0.2}>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="p-3 bg-gray-800/50 rounded-full">
+                    {lang.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white font-tech-mono">
+                    {lang.name}
+                  </h3>
+                  <div className="w-24 h-24">
+                    <CircularProgressbar
+                      value={0}
+                      text={`${lang.proficiency}%`}
+                      styles={{
+                        path: { 
+                          stroke: `rgba(59, 130, 246, ${lang.proficiency / 100})`,
+                          transition: 'stroke-dashoffset 1.5s ease-in-out',
+                          transform: 'rotate(0.25turn)',
+                          transformOrigin: 'center center',
+                        },
+                        trail: { stroke: '#1f2937' },
+                        text: { 
+                          fill: '#fff', 
+                          fontSize: '1.5rem', 
+                          fontFamily: 'Rajdhani',
+                          transform: 'rotate(-0.25turn)' 
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-white font-tech-mono">
-                  {lang.name}
-                </h3>
-                <div className="w-24 h-24">
-                  <CircularProgressbar
-                    value={lang.proficiency}
-                    text={`${lang.proficiency}%`}
-                    styles={{
-                      path: { stroke: `rgba(59, 130, 246, ${lang.proficiency / 100})` },
-                      trail: { stroke: '#1f2937' },
-                      text: { fill: '#fff', fontSize: '1.5rem', fontFamily: 'Rajdhani' }
-                    }}
-                  />
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </ScrollReveal>
           ))}
         </div>
       </motion.div>
@@ -216,33 +246,45 @@ const About = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tools.map((tool, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.03 }}
-              className="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 bg-gray-800/50 rounded-full">
-                    {tool.icon}
+            <ScrollReveal key={index} delay={index * 0.2}>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-gray-800/50 rounded-full">
+                      {tool.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold text-white font-tech-mono">
+                      {tool.name}
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-semibold text-white font-tech-mono">
-                    {tool.name}
-                  </h3>
+                  <div className="w-16 h-16">
+                    <CircularProgressbar
+                      value={0}
+                      text={`${tool.proficiency}%`}
+                      styles={{
+                        path: { 
+                          stroke: `rgba(59, 130, 246, ${tool.proficiency / 100})`,
+                          transition: 'stroke-dashoffset 1.5s ease-in-out',
+                          transform: 'rotate(0.25turn)',
+                          transformOrigin: 'center center',
+                        },
+                        trail: { stroke: '#1f2937' },
+                        text: { 
+                          fill: '#fff', 
+                          fontSize: '1.5rem', 
+                          fontFamily: 'Rajdhani',
+                          transform: 'rotate(-0.25turn)' 
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="w-16 h-16">
-                  <CircularProgressbar
-                    value={tool.proficiency}
-                    text={`${tool.proficiency}%`}
-                    styles={{
-                      path: { stroke: `rgba(59, 130, 246, ${tool.proficiency / 100})` },
-                      trail: { stroke: '#1f2937' },
-                      text: { fill: '#fff', fontSize: '1.5rem', fontFamily: 'Rajdhani' }
-                    }}
-                  />
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </ScrollReveal>
           ))}
         </div>
       </motion.div>

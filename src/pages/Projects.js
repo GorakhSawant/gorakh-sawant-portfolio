@@ -123,7 +123,7 @@ const Projects = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="max-w-7xl mx-auto px-4 py-16"
+      className="relative z-10"
     >
       <div className="text-center mb-16">
         <motion.h1 
