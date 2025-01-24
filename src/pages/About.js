@@ -1,89 +1,305 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { FaReact, FaPython, FaDocker } from 'react-icons/fa';
+import { FaPython, FaJava, FaAws, FaDocker, FaGitAlt, FaApple, FaLinux, FaGraduationCap, FaLaptopCode, FaBrain, FaServer } from 'react-icons/fa';
+import { SiJavascript, SiCplusplus, SiFlask, SiMongodb, SiHtml5, SiCss3, SiRobotframework, SiJira } from 'react-icons/si';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css'; 
-import profileImage from '../assets/images/profile.jpg'
+import profileImage from '../assets/images/profile.jpg';
 
 const About = () => {
-  const [isSkillsOpen, setIsSkillsOpen] = useState(false);
-  const [isExperienceOpen, setIsExperienceOpen] = useState(false);
-  const [isStatementOpen, setIsStatementOpen] = useState(false);
-
   const skills = [
-    { name: "React & JavaScript", proficiency: 85, icon: <FaReact size={30} className="text-blue-400" /> },
-    { name: "Tailwind CSS", proficiency: 80, icon: <div className="bg-blue-400 rounded-full h-8 w-8"></div> },
-    { name: "Python & Flask", proficiency: 90, icon: <FaPython size={30} className="text-yellow-500" /> },
-    { name: "Docker & AWS", proficiency: 75, icon: <FaDocker size={30} className="text-blue-600" /> },
+    {
+      category: "Frontend Development",
+      icon: <FaLaptopCode className="text-4xl text-blue-400" />,
+      technologies: ["React.js", "Next.js", "JavaScript", "TypeScript", "Tailwind CSS", "HTML5/CSS3"]
+    },
+    {
+      category: "Backend Development",
+      icon: <FaServer className="text-4xl text-blue-400" />,
+      technologies: ["Node.js", "Express.js", "Python", "Django", "RESTful APIs", "GraphQL"]
+    },
+    {
+      category: "Machine Learning",
+      icon: <FaBrain className="text-4xl text-blue-400" />,
+      technologies: ["TensorFlow", "PyTorch", "Scikit-learn", "OpenCV", "NLP", "Computer Vision"]
+    }
+  ];
+
+  const education = [
+    {
+      degree: "Master of Technology",
+      field: "Computer Science",
+      institution: "Your University Name",
+      year: "2022-2024",
+      description: "Specialization in Artificial Intelligence and Machine Learning"
+    },
+    {
+      degree: "Bachelor of Engineering",
+      field: "Computer Engineering",
+      institution: "Your College Name",
+      year: "2018-2022",
+      description: "First Class with Distinction"
+    }
+  ];
+
+  const languages = [
+    { name: "Python", proficiency: 90, icon: <FaPython size={30} className="text-yellow-400" /> },
+    { name: "Java", proficiency: 80, icon: <FaJava size={30} className="text-red-500" /> },
+    { name: "C++", proficiency: 75, icon: <SiCplusplus size={30} className="text-blue-400" /> },
+    { name: "JavaScript", proficiency: 85, icon: <SiJavascript size={30} className="text-yellow-400" /> },
+    { name: "Flask", proficiency: 80, icon: <SiFlask size={30} className="text-white" /> },
+    { name: "MySQL", proficiency: 70, icon: <SiMongodb size={30} className="text-green-400" /> },
+    { name: "HTML/CSS", proficiency: 90, icon: <SiHtml5 size={30} className="text-orange-400" /> },
+    { name: "Bootstrap", proficiency: 80, icon: <SiCss3 size={30} className="text-purple-400" /> },
+  ];
+
+  const tools = [
+    { name: "AWS", proficiency: 80, icon: <FaAws size={30} className="text-orange-400" /> },
+    { name: "Docker", proficiency: 85, icon: <FaDocker size={30} className="text-blue-600" /> },
+    { name: "Robot Framework", proficiency: 80, icon: <SiRobotframework size={30} className="text-red-400" /> },
+    { name: "JIRA", proficiency: 85, icon: <SiJira size={30} className="text-blue-600" /> },
+    { name: "Git & GitHub", proficiency: 90, icon: <FaGitAlt size={30} className="text-orange-400" /> },
+    { name: "UI Automation", proficiency: 80, icon: <FaApple size={30} className="text-gray-300" /> },
+    { name: "Operating Systems", proficiency: 85, icon: <FaLinux size={30} className="text-white" /> },
   ];
 
   return (
-    <section className="min-h-screen bg-gray-900 text-white py-20 px-10">
-      <div className="max-w-6xl mx-auto">
-        {/* Profile Section */}
-        <div className="text-center mb-10">
-          <img
-            src= {profileImage}
-            alt="Profile"
-            className="w-32 h-32 rounded-full mx-auto border-4 border-blue-500 shadow-lg mb-4"
-          />
-          <h1 className="text-5xl font-bold mb-2">Your Name</h1>
-          <p className="text-lg leading-relaxed text-gray-300">
-            A Software Engineer passionate about crafting efficient solutions for real-world problems.
-          </p>
-        </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-6xl mx-auto px-4 py-16"
+    >
+      {/* Header Section */}
+      <motion.div 
+        initial={{ y: 20 }}
+        animate={{ y: 0 }}
+        className="text-center mb-16"
+      >
+        <motion.img
+          src={profileImage}
+          alt="Profile"
+          className="w-40 h-40 rounded-full mx-auto border-4 border-blue-500 shadow-lg mb-8"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
+        />
+        <h1 className="text-5xl font-bold text-white mb-6 font-orbitron tracking-wider">
+          Gorakh Sawant
+        </h1>
+        <p className="text-xl text-gray-200 max-w-3xl mx-auto font-rajdhani leading-relaxed">
+          Software Engineer specializing in automation testing and full-stack development. 
+          Passionate about creating efficient solutions and implementing robust testing strategies.
+        </p>
+      </motion.div>
 
-        {/* Grid Layout for Skills, Experience, Personal Statement */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          {/* Skills Card */}
-          <motion.div
-            className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3 className="text-3xl font-semibold mb-4 text-blue-400">Skills</h3>
-            <div className="grid grid-cols-1 gap-4">
-              {skills.map((skill, index) => (
-                <div key={index} className="flex items-center justify-between space-x-4">
-                  <div className="flex items-center space-x-2">
-                    {skill.icon}
-                    <h4 className="text-lg font-semibold text-gray-200">{skill.name}</h4>
-                  </div>
-                  <div className="w-20 h-20">
-                    <CircularProgressbar value={skill.proficiency} text={`${skill.proficiency}%`} />
-                  </div>
+      {/* Skills Section */}
+      <div className="mb-20">
+        <h2 className="text-3xl font-bold text-white mb-8 font-orbitron tracking-wide text-center">
+          Technical Expertise
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {skills.map((skill, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className="backdrop-blur-lg bg-white/10 p-6 rounded-2xl"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-4">
+                  {skill.icon}
                 </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Experience Card */}
-          <motion.div
-            className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3 className="text-3xl font-semibold mb-4 text-blue-400">Experience</h3>
-            <p className="text-lg text-gray-300">
-              I have 9+ months of experience as a Quality Automation Engineer, specializing in UI and API automation testing.
-            </p>
-            <p className="mt-4 text-lg text-gray-300">
-              I have hands-on experience developing dynamic web applications using React and Flask.
-            </p>
-          </motion.div>
-
-          {/* Personal Statement Card */}
-          <motion.div
-            className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3 className="text-3xl font-semibold mb-4 text-blue-400">Personal Statement</h3>
-            <p className="text-lg leading-relaxed text-gray-300">
-              "I believe in continuous learning and improvement. I enjoy tackling new challenges and pushing the boundaries of technology."
-            </p>
-          </motion.div>
+                <h3 className="text-xl font-semibold text-white mb-4 font-tech-mono">
+                  {skill.category}
+                </h3>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {skill.technologies.map((tech, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm font-rajdhani"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </section>
+
+      {/* Education Section */}
+      <div>
+        <h2 className="text-3xl font-bold text-white mb-8 font-orbitron tracking-wide text-center">
+          Education
+        </h2>
+        <div className="space-y-6">
+          {education.map((edu, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className="backdrop-blur-lg bg-white/10 p-6 rounded-2xl flex items-start space-x-4"
+            >
+              <div className="p-3 bg-blue-500/20 rounded-lg">
+                <FaGraduationCap className="text-3xl text-blue-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white font-tech-mono">
+                  {edu.degree} in {edu.field}
+                </h3>
+                <p className="text-blue-300 font-rajdhani">
+                  {edu.institution}
+                </p>
+                <p className="text-gray-400 font-rajdhani">
+                  {edu.year}
+                </p>
+                <p className="text-gray-300 mt-2 font-rajdhani">
+                  {edu.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Languages Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-16"
+      >
+        <h2 className="text-3xl font-bold text-white mb-8 font-orbitron tracking-wide text-center">
+          Programming Languages
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {languages.map((lang, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.03 }}
+              className="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="flex flex-col items-center space-y-4">
+                <div className="p-3 bg-gray-800/50 rounded-full">
+                  {lang.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-white font-tech-mono">
+                  {lang.name}
+                </h3>
+                <div className="w-24 h-24">
+                  <CircularProgressbar
+                    value={lang.proficiency}
+                    text={`${lang.proficiency}%`}
+                    styles={{
+                      path: { stroke: `rgba(59, 130, 246, ${lang.proficiency / 100})` },
+                      trail: { stroke: '#1f2937' },
+                      text: { fill: '#fff', fontSize: '1.5rem', fontFamily: 'Rajdhani' }
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Tools Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-16"
+      >
+        <h2 className="text-3xl font-bold text-white mb-8 font-orbitron tracking-wide text-center">
+          Technologies & Tools
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tools.map((tool, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.03 }}
+              className="backdrop-blur-lg bg-white/10 p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-gray-800/50 rounded-full">
+                    {tool.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white font-tech-mono">
+                    {tool.name}
+                  </h3>
+                </div>
+                <div className="w-16 h-16">
+                  <CircularProgressbar
+                    value={tool.proficiency}
+                    text={`${tool.proficiency}%`}
+                    styles={{
+                      path: { stroke: `rgba(59, 130, 246, ${tool.proficiency / 100})` },
+                      trail: { stroke: '#1f2937' },
+                      text: { fill: '#fff', fontSize: '1.5rem', fontFamily: 'Rajdhani' }
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Experience Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-16"
+      >
+        <h2 className="text-3xl font-bold text-white mb-8 font-orbitron tracking-wide text-center">
+          Work Experience
+        </h2>
+        <div className="space-y-6">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="backdrop-blur-lg bg-white/10 p-8 rounded-xl shadow-xl"
+          >
+            <h3 className="text-2xl font-bold text-blue-400 font-tech-mono mb-2">
+              Software Engineer
+            </h3>
+            <p className="text-xl text-gray-300 font-rajdhani mb-2">
+              Indexnine Technologies Pvt. Ltd., Pune
+            </p>
+            <p className="text-lg text-gray-400 font-rajdhani mb-4">
+              December 2023 - Present
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-gray-200 font-rajdhani">
+              <li>Specialized in automation testing using Robot Framework with Python</li>
+              <li>Reduced manual testing effort by 70% through UI automation improvements</li>
+              <li>Implemented CI/CD pipelines for automated testing workflows</li>
+              <li>Collaborated with cross-functional teams to improve test coverage</li>
+            </ul>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="backdrop-blur-lg bg-white/10 p-8 rounded-xl shadow-xl"
+          >
+            <h3 className="text-2xl font-bold text-blue-400 font-tech-mono mb-2">
+              Administrator L1
+            </h3>
+            <p className="text-xl text-gray-300 font-rajdhani mb-2">
+              Wipro Technologies Pvt. Ltd., Pune
+            </p>
+            <p className="text-lg text-gray-400 font-rajdhani mb-4">
+              January 2022 - December 2023
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-gray-200 font-rajdhani">
+              <li>Managed and maintained IT infrastructure and network systems</li>
+              <li>Implemented monitoring solutions for improved system reliability</li>
+              <li>Collaborated with technical teams for project implementations</li>
+            </ul>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

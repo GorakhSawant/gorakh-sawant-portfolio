@@ -11,9 +11,9 @@ import Contact from './pages/Contact';
 function App() {
   return (
     <Router>
-      <div className="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen">
+      <div className="flex flex-col min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
         <Navbar />
-        <main className="flex-grow">
+        <main className="flex-grow container mx-auto px-4 py-8 pt-24">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
