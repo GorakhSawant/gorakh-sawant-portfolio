@@ -2,169 +2,154 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-
-const projects = [
-  {
-    title: "Portfolio Website",
-    description: "Personal portfolio website built with React and Tailwind CSS. Features smooth animations, responsive design, and modern UI components.",
-    technologies: ["React", "Tailwind CSS", "Framer Motion"],
-    github: "https://github.com/gorakhsawant/portfolio",
-    liveDemo: "https://gorakhsawant.vercel.app",
-    image: "https://i.imgur.com/QlzJ1Ht.jpg" // Modern portfolio website image
-  },
-  {
-    title: "E-Commerce Platform",
-    description: "Full-stack e-commerce platform with user authentication, product management, and payment integration.",
-    technologies: ["React", "Node.js", "MongoDB", "Express"],
-    github: "https://github.com/gorakhsawant/ecommerce",
-    liveDemo: "https://ecommerce-demo.vercel.app",
-    image: "https://i.imgur.com/8T6Irig.jpg" // E-commerce platform image
-  },
-  {
-    title: "Task Management App",
-    description: "A collaborative task management application with real-time updates and team workspace features.",
-    technologies: ["React", "Firebase", "Material-UI", "Redux"],
-    github: "https://github.com/gorakhsawant/task-manager",
-    liveDemo: "https://task-manager-demo.vercel.app",
-    image: "https://i.imgur.com/VOmYR4X.jpg" // Task management app image
-  },
-  {
-    title: "Weather Dashboard",
-    description: "Real-time weather dashboard with location-based forecasts and interactive weather maps.",
-    technologies: ["React", "OpenWeather API", "Chart.js", "Leaflet"],
-    github: "https://github.com/gorakhsawant/weather-app",
-    liveDemo: "https://weather-dashboard-demo.vercel.app",
-    image: "https://i.imgur.com/GfLWJ66.jpg" // Weather dashboard image
-  },
-  {
-    title: "Social Media Analytics",
-    description: "Analytics dashboard for social media metrics with data visualization and reporting features.",
-    technologies: ["React", "D3.js", "Node.js", "PostgreSQL"],
-    github: "https://github.com/gorakhsawant/social-analytics",
-    liveDemo: "https://social-analytics-demo.vercel.app",
-    image: "https://i.imgur.com/L0rHfJ6.jpg" // Analytics dashboard image
-  },
-  {
-    title: "Fitness Tracking App",
-    description: "Mobile-responsive fitness tracking application with workout plans and progress monitoring.",
-    technologies: ["React Native", "Firebase", "Redux", "Express"],
-    github: "https://github.com/gorakhsawant/fitness-tracker",
-    liveDemo: "https://fitness-tracker-demo.vercel.app",
-    image: "https://i.imgur.com/pz0OJ8F.jpg" // Fitness tracking app image
-  }
-];
+import { SiReact, SiNextdotjs, SiTailwindcss, SiFirebase, SiPython, SiPhp, SiMysql, SiBootstrap } from 'react-icons/si';
+import StarryBackground from '../components/StarryBackground';
 
 const ProjectCard = ({ project }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="backdrop-blur-lg bg-white/10 rounded-2xl overflow-hidden shadow-xl group"
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      className="bg-white bg-opacity-20 backdrop-blur-md rounded-lg p-6 transition-transform duration-300 hover:scale-105 mb-6"
     >
-      <div className="relative overflow-hidden aspect-video">
-        <img 
-          src={project.image} 
-          alt={project.title}
-          className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <div className="absolute bottom-0 left-0 right-0 p-4 space-x-4 flex justify-end">
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.github}
+      {/* Project Header */}
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <span className="text-blue-400 font-tech-mono text-sm">
+            {project.category}
+          </span>
+          <h3 className="text-2xl font-bold text-white font-orbitron mt-1 
+                       transition-colors duration-300">
+            {project.name}
+          </h3>
+        </div>
+        <div className="flex gap-4">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+          >
+            <FaGithub className="text-xl" />
+          </a>
+          {project.live && (
+            <a
+              href={project.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+              className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
             >
-              <FaGithub className="text-white text-xl" />
-            </motion.a>
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.liveDemo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
-            >
-              <FaExternalLinkAlt className="text-white text-xl" />
-            </motion.a>
-          </div>
+              <FaExternalLinkAlt />
+            </a>
+          )}
         </div>
       </div>
 
-      <div className="p-6 space-y-4">
-        <h3 className="text-2xl font-semibold text-white group-hover:text-blue-400 transition-colors font-orbitron tracking-wide">
-          {project.title}
-        </h3>
-        <p className="text-gray-300 line-clamp-3 font-rajdhani text-lg">
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {project.technologies.map((tech, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm hover:bg-blue-500/30 transition-colors font-rajdhani font-medium"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+      {/* Description */}
+      <p className="text-gray-300 font-rajdhani leading-relaxed mb-4">
+        {project.description}
+      </p>
+
+      {/* Tech Stack */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {project.technologies.map((tech, idx) => (
+          <span 
+            key={idx}
+            className="text-sm text-gray-500 bg-gray-700 rounded-full px-2 py-1"
+          >
+            {tech}
+          </span>
+        ))}
       </div>
     </motion.div>
   );
 };
 
 const Projects = () => {
+  const projects = [
+    {
+      name: "Amazon Clone",
+      category: "E-COMMERCE",
+      description: "A full-featured Amazon clone with user authentication, product catalog, cart functionality, and order processing.",
+      technologies: [<SiReact />, <SiNextdotjs />, <SiTailwindcss />, <SiFirebase />],
+      github: "https://github.com/GorakhSawant/Amzon-Clone"
+    },
+    {
+      name: "Portfolio Website",
+      category: "WEB DEVELOPMENT",
+      description: "Modern portfolio website showcasing projects and skills, built with React and TailwindCSS.",
+      technologies: [<SiReact />, <SiTailwindcss />],
+      github: "https://github.com/GorakhSawant/GorakhSawant.github.io",
+      live: "https://gorakhsawant.github.io"
+    },
+    {
+      name: "Snake Game",
+      category: "GAME DEVELOPMENT",
+      description: "Classic Snake game with modern features including score tracking and difficulty levels.",
+      technologies: [<SiPython />],
+      github: "https://github.com/GorakhSawant/Snake-Game"
+    },
+    {
+      name: "Superfine Agro",
+      category: "BUSINESS",
+      description: "Agriculture business platform with inventory management and order processing system.",
+      technologies: [<SiPhp />, <SiMysql />, <SiBootstrap />],
+      github: "https://github.com/GorakhSawant/Superfine-Agro"
+    }
+  ];
+
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="relative z-10"
-    >
-      <div className="text-center mb-16">
-        <motion.h1 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-bold text-white mb-4 font-orbitron tracking-wider"
-        >
-          My Projects
-        </motion.h1>
-        <motion.p 
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 pt-20">
+      <StarryBackground />
+      <div className="max-w-7xl mx-auto px-4 mb-24">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xl text-gray-300 font-rajdhani"
+          className="space-y-4"
         >
-          Here are some of my recent works
-        </motion.p>
+          <div className="flex items-center gap-4">
+            <span className="text-blue-400 font-tech-mono text-sm tracking-wider">03.</span>
+            <span className="text-blue-400/60 font-tech-mono text-sm">MY WORK</span>
+            <div className="h-[1px] w-24 bg-blue-400/20" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-white font-orbitron">
+            Featured Projects
+          </h1>
+        </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} project={project} />
-        ))}
+      {/* Decorative Lines */}
+      <div className="absolute inset-0">
+        <div className="decorative-line vertical-line"></div> {/* Vertical Line */}
+        <div className="decorative-line horizontal-line"></div> {/* Horizontal Line */}
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-center mt-16"
-      >
+      {/* Projects List */}
+      <div className="max-w-7xl mx-auto px-4 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <ProjectCard key={project.name} project={project} />
+          ))}
+        </div>
+      </div>
+
+      {/* GitHub CTA */}
+      <div className="max-w-7xl mx-auto px-4 text-center pb-20">
         <a
-          href="https://github.com/gorakhsawant"
+          href="https://github.com/GorakhSawant"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors font-rajdhani font-semibold text-lg"
+          className="inline-flex items-center gap-3 px-6 py-3 text-gray-300 
+                   bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800/50
+                   hover:text-blue-400 hover:border-blue-500/50 transition-all duration-300 
+                   font-tech-mono text-sm group"
         >
-          <FaGithub className="text-xl" />
+          <FaGithub className="text-xl group-hover:rotate-12 transition-transform duration-300" />
           <span>View More on GitHub</span>
         </a>
-      </motion.div>
-    </motion.section>
+      </div>
+    </div>
   );
 };
 
