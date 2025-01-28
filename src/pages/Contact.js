@@ -1,7 +1,8 @@
 // src/pages/Contact.js
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaGithub, FaLinkedin, FaMapMarkerAlt, FaPaperPlane, FaArrowRight } from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
 
 const SocialLink = ({ icon, label, value, link }) => (
   <motion.a
@@ -28,6 +29,53 @@ const SocialLink = ({ icon, label, value, link }) => (
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [activeField, setActiveField] = useState(null);
+  const [status, setStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const formRef = useRef();
+
+  useEffect(() => {
+    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus({ type: '', message: '' });
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_name: 'Gorakh Sawant',
+        reply_to: formData.email
+      };
+
+      const result = await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+
+      if (result.text === 'OK') {
+        setStatus({
+          type: 'success',
+          message: 'Message sent successfully! I will get back to you soon.'
+        });
+        setFormData({ name: '', email: '', message: '' });
+      }
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      setStatus({
+        type: 'error',
+        message: error.text || 'Oops! Something went wrong. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const socialLinks = [
     {
@@ -51,7 +99,7 @@ const Contact = () => {
     {
       icon: <FaMapMarkerAlt className="text-xl text-blue-400" />,
       label: 'LOCATION',
-      value: 'Mumbai, India',
+      value: 'Pune, MH, India',
       link: 'https://maps.google.com/?q=Mumbai,India'
     }
   ];
@@ -102,7 +150,21 @@ const Contact = () => {
               Have a question or want to work together?
             </p>
 
-            <form className="space-y-8">
+            {status.message && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`mb-6 p-4 rounded-lg ${
+                  status.type === 'success' 
+                    ? 'bg-green-500/20 text-green-400' 
+                    : 'bg-red-500/20 text-red-400'
+                }`}
+              >
+                {status.message}
+              </motion.div>
+            )}
+
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
               {['name', 'email', 'message'].map((field) => (
                 <motion.div
                   key={field}
@@ -119,11 +181,13 @@ const Contact = () => {
                   </label>
                   {field === 'message' ? (
                     <textarea
+                      name={field}
                       value={formData[field]}
                       onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
                       onFocus={() => setActiveField(field)}
                       onBlur={() => setActiveField(null)}
                       rows="4"
+                      required
                       className="w-full bg-white/5 border-2 border-white/10 rounded-lg px-4 pt-4
                                text-white focus:border-blue-500/50 focus:outline-none focus:ring-2
                                focus:ring-blue-500/20 transition-all duration-300 font-rajdhani resize-none"
@@ -131,10 +195,12 @@ const Contact = () => {
                   ) : (
                     <input
                       type={field === 'email' ? 'email' : 'text'}
+                      name={field}
                       value={formData[field]}
                       onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
                       onFocus={() => setActiveField(field)}
                       onBlur={() => setActiveField(null)}
+                      required
                       className="w-full h-14 bg-white/5 border-2 border-white/10 rounded-lg px-4
                                text-white focus:border-blue-500/50 focus:outline-none focus:ring-2
                                focus:ring-blue-500/20 transition-all duration-300 font-rajdhani"
@@ -144,14 +210,29 @@ const Contact = () => {
               ))}
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg
+                type="submit"
+                disabled={isSubmitting}
+                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                className={`w-full h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg
                          text-white font-rajdhani font-semibold flex items-center justify-center gap-2
-                         hover:from-blue-600 hover:to-blue-700 transition-all duration-300"
+                         transition-all duration-300 ${
+                           isSubmitting 
+                             ? 'opacity-70 cursor-not-allowed' 
+                             : 'hover:from-blue-600 hover:to-blue-700'
+                         }`}
               >
-                <span>Send Message</span>
-                <FaPaperPlane className="text-sm" />
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Sending...</span>
+                  </div>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <FaPaperPlane className="text-sm" />
+                  </>
+                )}
               </motion.button>
             </form>
           </motion.div>
