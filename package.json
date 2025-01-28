@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@react-three/drei": "^9.114.0",
     "@react-three/fiber": "^8.17.8",
     "@testing-library/jest-dom": "^5.17.0",
@@ -26,7 +27,14 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy:netlify": "netlify deploy --prod",
+    "deploy:aws": "npm run build && node scripts/deploy-aws.js",
+    "deploy:all": "npm run deploy:netlify && npm run deploy:aws",
+    "docker:build": "docker build -t portfolio .",
+    "docker:dev": "docker-compose up app-dev",
+    "docker:prod": "docker-compose up app-prod",
+    "docker:push": "docker push your-dockerhub-username/portfolio:latest"
   },
   "eslintConfig": {
     "extends": [

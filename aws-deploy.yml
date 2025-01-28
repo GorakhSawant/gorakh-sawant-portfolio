@@ -1,0 +1,7 @@
+# Create an S3 bucket
+1. AWS S3:
+  - Go to S3 in AWS Console
+  - Create a new bucket
+  - Enable "Static website hosting"
+  - Unblock all public access
+  - Add bucket policy: 

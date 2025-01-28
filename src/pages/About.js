@@ -23,31 +23,33 @@ const SkillCard = ({ skill, index }) => (
     whileHover={{ scale: 1.02 }}
     className="backdrop-blur-xl bg-white/10 p-8 rounded-xl border border-white/20
               hover:border-blue-500/50 transition-all duration-300 shadow-xl
-              hover:shadow-blue-500/10"
+              hover:shadow-blue-500/10 h-full"
   >
-    <div className="flex items-start gap-4">
-      <div className="p-3 bg-blue-500/20 rounded-lg">
-        {skill.icon}
-      </div>
-      <div>
-        <h3 className="text-xl font-bold text-white mb-3 font-tech-mono">
-          {skill.name}
-        </h3>
-        <p className="text-gray-200 font-rajdhani mb-4 leading-relaxed">
-          {skill.description}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {skill.tech.map((item) => (
-            <span 
-              key={item}
-              className="px-3 py-1.5 bg-blue-500/20 rounded-full text-blue-300 text-sm font-tech-mono
-                       border border-blue-500/30 hover:border-blue-400 transition-all duration-300
-                       hover:bg-blue-500/30"
-            >
-              {item}
-            </span>
-          ))}
+    <div className="flex flex-col h-full">
+      <div className="flex items-start gap-4 mb-4">
+        <div className="p-3 bg-blue-500/20 rounded-lg">
+          {skill.icon}
         </div>
+        <div>
+          <h3 className="text-xl font-bold text-white mb-2 font-tech-mono">
+            {skill.name}
+          </h3>
+          <p className="text-gray-200 font-rajdhani leading-relaxed">
+            {skill.description}
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2 mt-auto">
+        {skill.tech.map((item) => (
+          <span 
+            key={item}
+            className="px-3 py-1.5 bg-blue-500/20 rounded-full text-blue-300 text-sm font-tech-mono
+                     border border-blue-500/30 hover:border-blue-400 transition-all duration-300
+                     hover:bg-blue-500/30"
+          >
+            {item}
+          </span>
+        ))}
       </div>
     </div>
   </motion.div>
