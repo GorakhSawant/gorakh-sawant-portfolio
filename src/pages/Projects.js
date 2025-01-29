@@ -72,11 +72,11 @@ const ProjectCard = ({ project }) => {
 const Projects = () => {
   const projects = [
     {
-      name: "Amazon Clone",
+      name: "Cafe-Mania",
       category: "E-COMMERCE",
-      description: "A full-featured Amazon clone with user authentication, product catalog, cart functionality, and order processing.",
+      description: "A full-featured cafe site with user authentication, product catalog, cart functionality, and order processing.",
       technologies: [<SiReact />, <SiNextdotjs />, <SiTailwindcss />, <SiFirebase />],
-      github: "https://github.com/GorakhSawant/Amzon-Clone"
+      github: "https://github.com/GorakhSawant/Cafe-Mania"
     },
     {
       name: "Portfolio Website",

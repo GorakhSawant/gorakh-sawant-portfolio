@@ -1,8 +1,7 @@
 // src/pages/Contact.js
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaGithub, FaLinkedin, FaMapMarkerAlt, FaPaperPlane, FaArrowRight } from 'react-icons/fa';
-import emailjs from '@emailjs/browser';
 
 const SocialLink = ({ icon, label, value, link }) => (
   <motion.a
@@ -27,16 +26,14 @@ const SocialLink = ({ icon, label, value, link }) => (
 );
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [activeField, setActiveField] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
   const [status, setStatus] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const formRef = useRef();
-
-  useEffect(() => {
-    emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
-  }, []);
+  const [activeField, setActiveField] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,33 +41,30 @@ const Contact = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        message: formData.message,
-        to_name: 'Gorakh Sawant',
-        reply_to: formData.email
-      };
+      const response = await fetch('http://localhost:5001/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
-      const result = await emailjs.send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-      );
+      const data = await response.json();
 
-      if (result.text === 'OK') {
-        setStatus({
-          type: 'success',
-          message: 'Message sent successfully! I will get back to you soon.'
+      if (response.ok) {
+        setStatus({ type: 'success', message: 'Message sent successfully!' });
+        setFormData({ name: '', email: '', message: '' }); // Clear form
+      } else {
+        setStatus({ 
+          type: 'error', 
+          message: `Failed to send message: ${data.error || data.message}` 
         });
-        setFormData({ name: '', email: '', message: '' });
       }
     } catch (error) {
-      console.error('EmailJS Error:', error);
-      setStatus({
-        type: 'error',
-        message: error.text || 'Oops! Something went wrong. Please try again later.'
+      console.error('Error details:', error);
+      setStatus({ 
+        type: 'error', 
+        message: `Failed to send message: ${error.message}. Please try again.` 
       });
     } finally {
       setIsSubmitting(false);
@@ -164,7 +158,7 @@ const Contact = () => {
               </motion.div>
             )}
 
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {['name', 'email', 'message'].map((field) => (
                 <motion.div
                   key={field}
