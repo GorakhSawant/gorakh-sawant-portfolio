@@ -1,10 +1,26 @@
 // src/pages/Projects.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { SiReact, SiNextdotjs, SiTailwindcss, SiFirebase, SiPython, SiPhp, SiMysql, SiBootstrap } from 'react-icons/si';
 
 const ProjectCard = ({ project }) => {
+  // Function to get the icon component based on the technology name
+  const getIconComponent = (tech) => {
+    const icons = {
+      'React': SiReact,
+      'Next.js': SiNextdotjs,
+      'TailwindCSS': SiTailwindcss,
+      'Firebase': SiFirebase,
+      'Python': SiPython,
+      'PHP': SiPhp,
+      'MySQL': SiMysql,
+      'Bootstrap': SiBootstrap
+    };
+    const IconComponent = icons[tech];
+    return IconComponent ? <IconComponent /> : null;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -15,7 +31,6 @@ const ProjectCard = ({ project }) => {
                 hover:border-blue-500/50 transition-all duration-300 shadow-xl
                 hover:shadow-blue-500/10"
     >
-      {/* Project Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
           <span className="text-blue-400 font-tech-mono text-sm tracking-wider">
@@ -47,20 +62,19 @@ const ProjectCard = ({ project }) => {
         </div>
       </div>
 
-      {/* Description */}
       <p className="text-gray-200 font-rajdhani leading-relaxed mb-6 text-lg">
         {project.description}
       </p>
 
-      {/* Tech Stack */}
       <div className="flex flex-wrap gap-3">
         {project.technologies.map((tech, idx) => (
           <span 
             key={idx}
             className="px-4 py-1.5 bg-blue-500/20 rounded-full text-blue-300 text-sm font-tech-mono
                      border border-blue-500/30 hover:border-blue-400 transition-all duration-300
-                     hover:bg-blue-500/30"
+                     hover:bg-blue-500/30 flex items-center gap-2"
           >
+            {getIconComponent(tech)}
             {tech}
           </span>
         ))}
@@ -70,46 +84,49 @@ const ProjectCard = ({ project }) => {
 };
 
 const Projects = () => {
-  const projects = [
-    {
-      name: "Cafe-Mania",
-      category: "E-COMMERCE",
-      description: "A full-featured cafe site with user authentication, product catalog, cart functionality, and order processing.",
-      technologies: [<SiReact />, <SiNextdotjs />, <SiTailwindcss />, <SiFirebase />],
-      github: "https://github.com/GorakhSawant/Cafe-Mania"
-    },
-    {
-      name: "Portfolio Website",
-      category: "WEB DEVELOPMENT",
-      description: "Modern portfolio website showcasing projects and skills, built with React and TailwindCSS.",
-      technologies: [<SiReact />, <SiTailwindcss />],
-      github: "https://github.com/GorakhSawant/GorakhSawant.github.io",
-      live: "https://gorakhsawant.github.io"
-    },
-    {
-      name: "Snake Game",
-      category: "GAME DEVELOPMENT",
-      description: "Classic Snake game with modern features including score tracking and difficulty levels.",
-      technologies: [<SiPython />],
-      github: "https://github.com/GorakhSawant/Snake-Game"
-    },
-    {
-      name: "Superfine Agro",
-      category: "BUSINESS",
-      description: "Agriculture business platform with inventory management and order processing system.",
-      technologies: [<SiPhp />, <SiMysql />, <SiBootstrap />],
-      github: "https://github.com/GorakhSawant/Superfine-Agro"
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/projects');
+      if (!response.ok) throw new Error('Failed to fetch projects');
+      const data = await response.json();
+      setProjects(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-blue-400">Loading projects...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-400">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden pt-20">
-      {/* Background Elements - adjusted opacity */}
       <div className="fixed inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-30" />
       <div className="fixed inset-0 grid-pattern opacity-25" />
       
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -123,7 +140,6 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {/* Projects Grid - increased gap */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-24">
           {projects.map((project, index) => (
             <ProjectCard 
@@ -133,7 +149,6 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* GitHub CTA - enhanced button */}
         <motion.div 
           className="text-center pb-20"
           initial={{ opacity: 0 }}

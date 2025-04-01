@@ -17,8 +17,8 @@
 }
 
 /* Randomize star positions and sizes */
-.star:nth-child(1) { top: 10%; left: 5%; width: 2px; height: 2px; animation-delay: 0s; }
-.star:nth-child(2) { top: 20%; left: 15%; width: 3px; height: 3px; animation-delay: 0.2s; }
+.star:nth-child(1) { top: 10%; left: 5%; }
+.star:nth-child(2) { top: 20%; left: 15%; }
 .star:nth-child(3) { top: 30%; left: 25%; width: 1.5px; height: 1.5px; animation-delay: 0.4s; }
 .star:nth-child(4) { top: 40%; left: 35%; width: 2.5px; height: 2.5px; animation-delay: 0.6s; }
 .star:nth-child(5) { top: 50%; left: 45%; width: 1px; height: 1px; animation-delay: 0.8s; }
@@ -65,12 +65,8 @@
 }
 
 @keyframes orbit {
-  0% {
-    transform: rotate(0deg) translateX(0);
-  }
-  100% {
-    transform: rotate(360deg) translateX(0);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes rotate {

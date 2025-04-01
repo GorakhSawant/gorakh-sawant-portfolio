@@ -31,14 +31,12 @@ const Contact = () => {
     email: '',
     message: ''
   });
-  const [status, setStatus] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [activeField, setActiveField] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setStatus({ type: '', message: '' });
 
     try {
       const response = await fetch('http://localhost:5001/api/send-email', {
@@ -52,20 +50,13 @@ const Contact = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setStatus({ type: 'success', message: 'Message sent successfully!' });
+        setShowSuccessModal(true);
         setFormData({ name: '', email: '', message: '' }); // Clear form
       } else {
-        setStatus({ 
-          type: 'error', 
-          message: `Failed to send message: ${data.error || data.message}` 
-        });
+        console.error('Error details:', data);
       }
     } catch (error) {
       console.error('Error details:', error);
-      setStatus({ 
-        type: 'error', 
-        message: `Failed to send message: ${error.message}. Please try again.` 
-      });
     } finally {
       setIsSubmitting(false);
     }
@@ -98,8 +89,71 @@ const Contact = () => {
     }
   ];
 
+  // Success Modal Component
+  const SuccessModal = () => (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+    >
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="relative bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl shadow-xl 
+                 border border-blue-500/20 max-w-md w-full backdrop-blur-xl"
+      >
+        <div className="text-center">
+          {/* Success Icon */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="w-16 h-16 bg-blue-500/20 rounded-full mx-auto mb-6 flex items-center justify-center"
+          >
+            <svg 
+              className="w-8 h-8 text-blue-400" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </motion.div>
+
+          <h3 className="text-2xl font-bold text-white mb-4 font-orbitron">
+            Thank You for Reaching Out!
+          </h3>
+          
+          <p className="text-gray-300 mb-6 font-rajdhani">
+            I appreciate you taking the time to contact me. I'll get back to you as soon as possible!
+          </p>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setShowSuccessModal(false)}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg font-rajdhani
+                     hover:bg-blue-600 transition-colors duration-300"
+          >
+            Close
+          </motion.button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+
   return (
     <div className="min-h-screen pt-20">
+      {showSuccessModal && <SuccessModal />}
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-0">
           {/* Left Section - Contact Info */}
@@ -144,20 +198,6 @@ const Contact = () => {
               Have a question or want to work together?
             </p>
 
-            {status.message && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`mb-6 p-4 rounded-lg ${
-                  status.type === 'success' 
-                    ? 'bg-green-500/20 text-green-400' 
-                    : 'bg-red-500/20 text-red-400'
-                }`}
-              >
-                {status.message}
-              </motion.div>
-            )}
-
             <form onSubmit={handleSubmit} className="space-y-8">
               {['name', 'email', 'message'].map((field) => (
                 <motion.div
@@ -167,7 +207,7 @@ const Contact = () => {
                 >
                   <label 
                     className={`absolute left-4 transition-all duration-300 font-tech-mono
-                              ${activeField === field || formData[field] 
+                              ${formData[field] 
                                 ? '-top-6 text-sm text-blue-400'
                                 : 'top-4 text-gray-400'}`}
                   >
@@ -178,8 +218,6 @@ const Contact = () => {
                       name={field}
                       value={formData[field]}
                       onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                      onFocus={() => setActiveField(field)}
-                      onBlur={() => setActiveField(null)}
                       rows="4"
                       required
                       className="w-full bg-white/5 border-2 border-white/10 rounded-lg px-4 pt-4
@@ -192,8 +230,6 @@ const Contact = () => {
                       name={field}
                       value={formData[field]}
                       onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                      onFocus={() => setActiveField(field)}
-                      onBlur={() => setActiveField(null)}
                       required
                       className="w-full h-14 bg-white/5 border-2 border-white/10 rounded-lg px-4
                                text-white focus:border-blue-500/50 focus:outline-none focus:ring-2

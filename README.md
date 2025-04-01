@@ -1,70 +1,139 @@
-# Getting Started with Create React App
+# Portfolio Website Setup Guide
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a full-stack portfolio website built with React, Node.js, MongoDB, and TailwindCSS. The application consists of a React frontend and a Node.js/Express backend with MongoDB for data storage.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+Before you begin, ensure you have the following installed on your system:
+- [Node.js](https://nodejs.org/) (v14 or higher)
+- [MongoDB Community Edition](https://www.mongodb.com/try/download/community)
+- npm (comes with Node.js)
 
-### `npm start`
+## Installation Steps
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. MongoDB Setup
+1. Download and install MongoDB Community Server from [MongoDB Download Center](https://www.mongodb.com/try/download/community)
+2. During installation:
+   - Choose "Complete" installation type
+   - Install MongoDB Compass (the GUI tool) if prompted
+3. After installation:
+   - Press Win + R
+   - Type `services.msc` and press Enter
+   - Find "MongoDB" in the services list
+   - Make sure it's running (if not, right-click and select "Start")
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 2. Project Setup
 
-### `npm test`
+1. Clone the repository:
+```bash
+git clone https://github.com/GorakhSawant/portfolio.git
+cd portfolio
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Install frontend dependencies:
+```bash
+npm install
+```
 
-### `npm run build`
+3. Install backend dependencies:
+```bash
+cd backend
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Create a `.env` file in the backend directory with the following content:
+```env
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-email-app-password
+PORT=5001
+MONGODB_URI=mongodb://localhost:27017/portfolio
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Running the Application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Start MongoDB
+- Ensure MongoDB service is running (check in services.msc)
+- MongoDB should be running on the default port 27017
 
-### `npm run eject`
+### 2. Seed the Database
+```bash
+cd backend
+node scripts/seedProjects.js
+```
+This will populate the database with initial projects and tech stack data.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3. Start the Backend Server
+In the backend directory:
+```bash
+node server.js
+```
+The backend server will start on port 5001.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 4. Start the Frontend Application
+Open a new terminal, navigate to the project root directory:
+```bash
+npm start
+```
+The frontend will start on port 3000 and should open automatically in your default browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Verifying the Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Frontend should be accessible at: http://localhost:3000
+2. Backend API should be accessible at: http://localhost:5001
+3. MongoDB should be running on: mongodb://localhost:27017
 
-## Learn More
+## Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Dynamic Projects Page with MongoDB integration
+- Contact Form with email functionality
+- Tech Stack showcase
+- Responsive design with TailwindCSS
+- Smooth animations with Framer Motion
+- Blog integration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Troubleshooting
 
-### Code Splitting
+1. If you see "Failed to fetch" error on the Projects page:
+   - Ensure MongoDB is installed and running
+   - Check if the backend server is running on port 5001
+   - Verify MongoDB connection string in .env file
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+2. If contact form doesn't work:
+   - Verify EMAIL_USER and EMAIL_PASS in .env file
+   - Ensure you're using an app-specific password for Gmail
 
-### Analyzing the Bundle Size
+3. If MongoDB fails to connect:
+   - Check if MongoDB service is running in services.msc
+   - Verify the MongoDB connection string
+   - Try restarting the MongoDB service
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Project Structure
 
-### Making a Progressive Web App
+```
+portfolio/
+├── src/                  # Frontend source files
+│   ├── components/       # React components
+│   ├── pages/           # Page components
+│   └── App.js           # Main App component
+├── backend/             # Backend server
+│   ├── models/          # MongoDB models
+│   ├── scripts/         # Database scripts
+│   └── server.js        # Express server
+└── public/             # Static files
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Additional Notes
 
-### Advanced Configuration
+- The project uses MongoDB for storing projects and tech stack information
+- Email functionality is handled through nodemailer with Gmail SMTP
+- Frontend is built with React and uses modern features like hooks and context
+- Styling is done with TailwindCSS for responsive design
+- Animations are implemented using Framer Motion
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing
 
-### Deployment
+Feel free to fork this repository and submit pull requests for any improvements.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License. 

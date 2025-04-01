@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaServer, FaRobot, FaDocker } from 'react-icons/fa';
+import * as SiIcons from 'react-icons/si';
 
 const ScrollReveal = ({ children, delay = 0 }) => {
   const ref = useRef(null);
@@ -68,7 +69,71 @@ const TechBadge = ({ tech }) => (
   </motion.div>
 );
 
+const TechStackItem = ({ tech, IconComponent }) => {
+  console.log('Tech item link:', tech.link);
+  return (
+    <motion.a
+      href={tech.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ scale: 1.05 }}
+      className="backdrop-blur-xl bg-white/10 p-4 rounded-xl border border-white/20
+                hover:border-blue-500/50 transition-all duration-300 shadow-xl
+                hover:shadow-blue-500/10 text-center block cursor-pointer
+                group"
+      onClick={(e) => {
+        console.log('Clicked link:', tech.link);
+      }}
+    >
+      {IconComponent && (
+        <div className="p-2 bg-blue-500/20 rounded-lg inline-block mb-2
+                      group-hover:bg-blue-500/30 transition-colors">
+          <IconComponent className="text-2xl text-blue-400" />
+        </div>
+      )}
+      <h3 className="text-base font-bold text-white font-tech-mono mb-1.5
+                   group-hover:text-blue-400 transition-colors">
+        {tech.name}
+      </h3>
+      <span className="text-xs text-blue-400 font-tech-mono px-2 py-0.5 
+                     bg-blue-500/10 rounded-full inline-block
+                     group-hover:bg-blue-500/20 transition-colors">
+        {tech.category}
+      </span>
+    </motion.a>
+  );
+};
+
 const About = () => {
+  const [techStack, setTechStack] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTechStack = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/tech-stack');
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Fetched tech stack (detailed):', JSON.stringify(data, null, 2));
+          setTechStack(data);
+        } else {
+          console.error('Failed to fetch tech stack');
+        }
+      } catch (error) {
+        console.error('Error fetching tech stack:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTechStack();
+  }, []);
+
+  // Function to dynamically get icon component
+  const getIconComponent = (iconName) => {
+    return SiIcons[iconName] || null;
+  };
+
   const skills = [
     { 
       name: 'Frontend Development', 
@@ -155,12 +220,23 @@ const About = () => {
               Tech <span className="text-blue-400 drop-shadow-lg">Stack</span>
             </h2>
           </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {technologies.map((tech, index) => (
-              <ScrollReveal key={tech} delay={index * 0.05}>
-                <TechBadge tech={tech} />
-              </ScrollReveal>
-            ))}
+          <div className="tech-stack-section max-w-6xl mx-auto px-4">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-32">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {techStack.map((tech) => {
+                  const IconComponent = getIconComponent(tech.icon);
+                  return (
+                    <ScrollReveal key={tech._id} delay={0.1}>
+                      <TechStackItem tech={tech} IconComponent={IconComponent} />
+                    </ScrollReveal>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
