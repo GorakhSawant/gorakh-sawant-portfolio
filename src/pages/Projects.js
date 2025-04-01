@@ -1,170 +1,174 @@
 // src/pages/Projects.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-
-const projects = [
-  {
-    title: "Portfolio Website",
-    description: "Personal portfolio website built with React and Tailwind CSS. Features smooth animations, responsive design, and modern UI components.",
-    technologies: ["React", "Tailwind CSS", "Framer Motion"],
-    github: "https://github.com/gorakhsawant/portfolio",
-    liveDemo: "https://gorakhsawant.vercel.app",
-    image: "https://i.imgur.com/QlzJ1Ht.jpg" // Modern portfolio website image
-  },
-  {
-    title: "E-Commerce Platform",
-    description: "Full-stack e-commerce platform with user authentication, product management, and payment integration.",
-    technologies: ["React", "Node.js", "MongoDB", "Express"],
-    github: "https://github.com/gorakhsawant/ecommerce",
-    liveDemo: "https://ecommerce-demo.vercel.app",
-    image: "https://i.imgur.com/8T6Irig.jpg" // E-commerce platform image
-  },
-  {
-    title: "Task Management App",
-    description: "A collaborative task management application with real-time updates and team workspace features.",
-    technologies: ["React", "Firebase", "Material-UI", "Redux"],
-    github: "https://github.com/gorakhsawant/task-manager",
-    liveDemo: "https://task-manager-demo.vercel.app",
-    image: "https://i.imgur.com/VOmYR4X.jpg" // Task management app image
-  },
-  {
-    title: "Weather Dashboard",
-    description: "Real-time weather dashboard with location-based forecasts and interactive weather maps.",
-    technologies: ["React", "OpenWeather API", "Chart.js", "Leaflet"],
-    github: "https://github.com/gorakhsawant/weather-app",
-    liveDemo: "https://weather-dashboard-demo.vercel.app",
-    image: "https://i.imgur.com/GfLWJ66.jpg" // Weather dashboard image
-  },
-  {
-    title: "Social Media Analytics",
-    description: "Analytics dashboard for social media metrics with data visualization and reporting features.",
-    technologies: ["React", "D3.js", "Node.js", "PostgreSQL"],
-    github: "https://github.com/gorakhsawant/social-analytics",
-    liveDemo: "https://social-analytics-demo.vercel.app",
-    image: "https://i.imgur.com/L0rHfJ6.jpg" // Analytics dashboard image
-  },
-  {
-    title: "Fitness Tracking App",
-    description: "Mobile-responsive fitness tracking application with workout plans and progress monitoring.",
-    technologies: ["React Native", "Firebase", "Redux", "Express"],
-    github: "https://github.com/gorakhsawant/fitness-tracker",
-    liveDemo: "https://fitness-tracker-demo.vercel.app",
-    image: "https://i.imgur.com/pz0OJ8F.jpg" // Fitness tracking app image
-  }
-];
+import { SiReact, SiNextdotjs, SiTailwindcss, SiFirebase, SiPython, SiPhp, SiMysql, SiBootstrap } from 'react-icons/si';
 
 const ProjectCard = ({ project }) => {
+  // Function to get the icon component based on the technology name
+  const getIconComponent = (tech) => {
+    const icons = {
+      'React': SiReact,
+      'Next.js': SiNextdotjs,
+      'TailwindCSS': SiTailwindcss,
+      'Firebase': SiFirebase,
+      'Python': SiPython,
+      'PHP': SiPhp,
+      'MySQL': SiMysql,
+      'Bootstrap': SiBootstrap
+    };
+    const IconComponent = icons[tech];
+    return IconComponent ? <IconComponent /> : null;
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="backdrop-blur-lg bg-white/10 rounded-2xl overflow-hidden shadow-xl group"
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.02 }}
+      viewport={{ once: true }}
+      className="backdrop-blur-xl bg-white/10 rounded-xl p-8 border border-white/20
+                hover:border-blue-500/50 transition-all duration-300 shadow-xl
+                hover:shadow-blue-500/10"
     >
-      <div className="relative overflow-hidden aspect-video">
-        <img 
-          src={project.image} 
-          alt={project.title}
-          className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <div className="absolute bottom-0 left-0 right-0 p-4 space-x-4 flex justify-end">
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.github}
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          <span className="text-blue-400 font-tech-mono text-sm tracking-wider">
+            {project.category}
+          </span>
+          <h3 className="text-2xl font-bold text-white font-orbitron mt-2">
+            {project.name}
+          </h3>
+        </div>
+        <div className="flex gap-4">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
+          >
+            <FaGithub className="text-2xl" />
+          </a>
+          {project.live && (
+            <a
+              href={project.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+              className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
             >
-              <FaGithub className="text-white text-xl" />
-            </motion.a>
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              href={project.liveDemo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
-            >
-              <FaExternalLinkAlt className="text-white text-xl" />
-            </motion.a>
-          </div>
+              <FaExternalLinkAlt className="text-xl" />
+            </a>
+          )}
         </div>
       </div>
 
-      <div className="p-6 space-y-4">
-        <h3 className="text-2xl font-semibold text-white group-hover:text-blue-400 transition-colors font-orbitron tracking-wide">
-          {project.title}
-        </h3>
-        <p className="text-gray-300 line-clamp-3 font-rajdhani text-lg">
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {project.technologies.map((tech, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm hover:bg-blue-500/30 transition-colors font-rajdhani font-medium"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+      <p className="text-gray-200 font-rajdhani leading-relaxed mb-6 text-lg">
+        {project.description}
+      </p>
+
+      <div className="flex flex-wrap gap-3">
+        {project.technologies.map((tech, idx) => (
+          <span 
+            key={idx}
+            className="px-4 py-1.5 bg-blue-500/20 rounded-full text-blue-300 text-sm font-tech-mono
+                     border border-blue-500/30 hover:border-blue-400 transition-all duration-300
+                     hover:bg-blue-500/30 flex items-center gap-2"
+          >
+            {getIconComponent(tech)}
+            {tech}
+          </span>
+        ))}
       </div>
     </motion.div>
   );
 };
 
 const Projects = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/projects');
+      if (!response.ok) throw new Error('Failed to fetch projects');
+      const data = await response.json();
+      setProjects(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-blue-400">Loading projects...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-400">Error: {error}</div>
+      </div>
+    );
+  }
+
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="relative z-10"
-    >
-      <div className="text-center mb-16">
-        <motion.h1 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-bold text-white mb-4 font-orbitron tracking-wider"
-        >
-          My Projects
-        </motion.h1>
-        <motion.p 
+    <div className="min-h-screen relative overflow-hidden pt-20">
+      <div className="fixed inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-30" />
+      <div className="fixed inset-0 grid-pattern opacity-25" />
+      
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xl text-gray-300 font-rajdhani"
+          className="text-center mb-24"
         >
-          Here are some of my recent works
-        </motion.p>
-      </div>
+          <h1 className="text-6xl font-bold text-white mb-8 font-orbitron">
+            Featured <span className="text-blue-400 drop-shadow-lg">Projects</span>
+          </h1>
+          <p className="text-xl text-gray-200 font-rajdhani max-w-2xl mx-auto leading-relaxed">
+            A collection of my work that showcases my skills and passion for creating innovative solutions.
+          </p>
+        </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} project={project} />
-        ))}
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-24">
+          {projects.map((project, index) => (
+            <ProjectCard 
+              key={project.name} 
+              project={project} 
+            />
+          ))}
+        </div>
 
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-center mt-16"
-      >
-        <a
-          href="https://github.com/gorakhsawant"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors font-rajdhani font-semibold text-lg"
+        <motion.div 
+          className="text-center pb-20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
         >
-          <FaGithub className="text-xl" />
-          <span>View More on GitHub</span>
-        </a>
-      </motion.div>
-    </motion.section>
+          <a
+            href="https://github.com/GorakhSawant"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-blue-500 text-white rounded-lg
+                     hover:bg-blue-600 transition-all duration-300 font-rajdhani text-lg font-semibold
+                     shadow-lg hover:shadow-xl hover:shadow-blue-500/20"
+          >
+            <FaGithub className="text-2xl" />
+            <span>View More on GitHub</span>
+          </a>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

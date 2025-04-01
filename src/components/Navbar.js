@@ -30,6 +30,7 @@ const Navbar = () => {
     { title: 'Home', path: '/' },
     { title: 'About', path: '/about' },
     { title: 'Projects', path: '/projects' },
+    { title: 'Blogs', path: '/blog' },
     { title: 'Contact', path: '/contact' },
   ];
 
@@ -38,26 +39,26 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-gray-900/80 backdrop-blur-md py-4' : 'bg-transparent py-6'
+        scrolled ? 'bg-gray-900/90 backdrop-blur-xl py-4 shadow-lg' : 'bg-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Logo - Keep Orbitron for brand identity */}
+          {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="text-2xl font-bold text-white font-orbitron tracking-wider">
-                Gorakh<span className="text-blue-400">.S</span>
+              <span className="text-3xl font-extrabold text-white font-orbitron tracking-wider">
+                Gorakh<span className="text-blue-400 text-glow">.S</span>
               </span>
             </motion.div>
           </Link>
 
-          {/* Desktop Navigation - Change to tech-mono for contrast */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-10">
             {navLinks.map((link, index) => (
               <motion.div
                 key={link.path}
@@ -67,15 +68,19 @@ const Navbar = () => {
               >
                 <Link
                   to={link.path}
-                  className={`relative text-lg transition-colors font-tech-mono tracking-wide ${
-                    isActive(link.path) ? 'text-blue-400' : 'text-white hover:text-blue-400'
-                  }`}
+                  className={`relative text-lg font-bold transition-all duration-300 font-tech-mono tracking-wider
+                    ${isActive(link.path) 
+                      ? 'text-blue-400 scale-105' 
+                      : 'text-white hover:text-blue-400'
+                    }
+                    hover:scale-105 transform`}
                 >
                   {link.title}
                   {isActive(link.path) && (
                     <motion.div
                       layoutId="underline"
-                      className="absolute left-0 right-0 h-0.5 bg-blue-400 bottom-[-4px]"
+                      className="absolute left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-400 
+                               bottom-[-6px] rounded-full shadow-glow"
                     />
                   )}
                 </Link>
@@ -87,12 +92,13 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white focus:outline-none"
+              className="text-white focus:outline-none p-2 hover:bg-white/10 rounded-lg 
+                       transition-colors duration-300"
             >
               {isOpen ? (
-                <FaTimes className="h-6 w-6" />
+                <FaTimes className="h-7 w-7" />
               ) : (
-                <FaBars className="h-6 w-6" />
+                <FaBars className="h-7 w-7" />
               )}
             </button>
           </div>
@@ -111,9 +117,11 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block text-center py-2 text-lg font-medium transition-colors ${
-                  isActive(link.path) ? 'text-blue-400' : 'text-white hover:text-blue-400'
-                }`}
+                className={`block text-center py-3 text-lg font-bold transition-all duration-300
+                  ${isActive(link.path) 
+                    ? 'text-blue-400 bg-white/5' 
+                    : 'text-white hover:text-blue-400 hover:bg-white/5'
+                  }`}
               >
                 {link.title}
               </Link>

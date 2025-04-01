@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import Typewriter from 'typewriter-effect';
-import profileImage from '../assets/images/profile.jpeg';
+import profileImage from '../assets/images/profile1.jpeg';
 
 const AnimatedRings = () => {
   const { scrollYProgress } = useScroll();
@@ -112,7 +112,7 @@ const Home = () => {
     },
     {
       name: 'LinkedIn',
-      url: 'https://linkedin.com/in/gorakh-sawant',
+      url: 'https://www.linkedin.com/in/gorakhsawant/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
       icon: <FaLinkedin className="text-2xl" />,
     },
     {
@@ -146,17 +146,7 @@ const Home = () => {
     },
   };
 
-  const floatingAnimation = {
-    initial: { y: 0 },
-    animate: {
-      y: [-20, 20, -20],
-      transition: {
-        duration: 6,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
+  
 
   return (
     <motion.div
@@ -251,7 +241,7 @@ const Home = () => {
           variants={itemVariants}
         >
           Transforming ideas into reality through code. Currently working as a Software Engineer at Indexnine Technologies, 
-          specializing in automation testing and full-stack development.
+          specializing in automation testing & front-end development.
         </motion.p>
 
         {/* CTA Buttons */}

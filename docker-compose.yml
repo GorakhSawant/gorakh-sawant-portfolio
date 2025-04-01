@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Development service
+  app-dev:
+    build: 
+      context: .
+      target: build
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_EMAILJS_SERVICE_ID=${REACT_APP_EMAILJS_SERVICE_ID}
+      - REACT_APP_EMAILJS_TEMPLATE_ID=${REACT_APP_EMAILJS_TEMPLATE_ID}
+      - REACT_APP_EMAILJS_PUBLIC_KEY=${REACT_APP_EMAILJS_PUBLIC_KEY}
+    command: npm start
+
+  # Production service
+  app-prod:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production 
