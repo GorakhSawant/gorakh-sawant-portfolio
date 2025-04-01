@@ -26,8 +26,8 @@ Before you begin, ensure you have the following installed on your system:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/GorakhSawant/portfolio.git
-cd portfolio
+git clone https://github.com/GorakhSawant/gorakh-sawant-portfolio.git
+cd gorakh-sawant
 ```
 
 2. Install frontend dependencies:
