@@ -130,10 +130,7 @@ portfolio/
 - Styling is done with TailwindCSS for responsive design
 - Animations are implemented using Framer Motion
 
-## Contributing
-
-Feel free to fork this repository and submit pull requests for any improvements.
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under gorakh sawant.
