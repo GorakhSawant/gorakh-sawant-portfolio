@@ -1,27 +1,29 @@
 version: '3.8'
 
 services:
-  # Development service
-  app-dev:
-    build: 
-      context: .
-      target: build
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - REACT_APP_EMAILJS_SERVICE_ID=${REACT_APP_EMAILJS_SERVICE_ID}
-      - REACT_APP_EMAILJS_TEMPLATE_ID=${REACT_APP_EMAILJS_TEMPLATE_ID}
-      - REACT_APP_EMAILJS_PUBLIC_KEY=${REACT_APP_EMAILJS_PUBLIC_KEY}
-    command: npm start
-
-  # Production service
-  app-prod:
-    build: .
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "80:80"
+    depends_on:
+      - backend
     environment:
-      - NODE_ENV=production 
+      - REACT_APP_API_URL=http://localhost:5001
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASS=${EMAIL_PASS}
+      - PORT=5001
+      - NODE_ENV=production
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules 

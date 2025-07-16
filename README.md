@@ -1,47 +1,48 @@
-# Portfolio Website Setup Guide
+# Portfolio Website
 
-This is a full-stack portfolio website built with React, Node.js, MongoDB, and TailwindCSS. The application consists of a React frontend and a Node.js/Express backend with MongoDB for data storage.
+A full-stack portfolio website built with React, Node.js, MongoDB, and TailwindCSS. Features a modern UI, project showcase, contact form, and blog integration.
+
+## Project Structure
+
+```
+portfolio/
+├── frontend/          # React frontend application
+│   ├── src/
+│   │   ├── api/      # API service layer
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── hooks/    # Custom React hooks
+│   └── public/
+├── backend/          # Node.js/Express backend
+│   ├── models/      # MongoDB models
+│   ├── scripts/     # Database scripts
+│   └── server.js    # Express server
+└── README.md
+```
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your system:
+Before you begin, ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v14 or higher)
-- [MongoDB Community Edition](https://www.mongodb.com/try/download/community)
+- [MongoDB](https://www.mongodb.com/try/download/community) (v4.4 or higher)
 - npm (comes with Node.js)
 
-## Installation Steps
-
-### 1. MongoDB Setup
-1. Download and install MongoDB Community Server from [MongoDB Download Center](https://www.mongodb.com/try/download/community)
-2. During installation:
-   - Choose "Complete" installation type
-   - Install MongoDB Compass (the GUI tool) if prompted
-3. After installation:
-   - Press Win + R
-   - Type `services.msc` and press Enter
-   - Find "MongoDB" in the services list
-   - Make sure it's running (if not, right-click and select "Start")
-
-### 2. Project Setup
+## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/GorakhSawant/gorakh-sawant-portfolio.git
-cd gorakh-sawant
+git clone https://github.com/GorakhSawant/portfolio.git
+cd portfolio
 ```
 
-2. Install frontend dependencies:
+2. Install all dependencies (frontend and backend):
 ```bash
-npm install
+npm run install:all
 ```
 
-3. Install backend dependencies:
-```bash
-cd backend
-npm install
-```
-
-4. Create a `.env` file in the backend directory with the following content:
+3. Set up environment variables:
+   
+   Create a `.env` file in the backend directory:
 ```env
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-email-app-password
@@ -51,86 +52,84 @@ MONGODB_URI=mongodb://localhost:27017/portfolio
 
 ## Running the Application
 
-### 1. Start MongoDB
-- Ensure MongoDB service is running (check in services.msc)
-- MongoDB should be running on the default port 27017
+You have several options to run the application:
 
-### 2. Seed the Database
-```bash
-cd backend
-node scripts/seedProjects.js
-```
-This will populate the database with initial projects and tech stack data.
-
-### 3. Start the Backend Server
-In the backend directory:
-```bash
-node server.js
-```
-The backend server will start on port 5001.
-
-### 4. Start the Frontend Application
-Open a new terminal, navigate to the project root directory:
+1. **Run everything with one command** (recommended for normal use):
 ```bash
 npm start
 ```
-The frontend will start on port 3000 and should open automatically in your default browser.
+This will:
+- Run the database seed script automatically
+- Start the backend server
+- Start the frontend development server
 
-## Verifying the Setup
+2. **Development mode** with auto-reload on changes:
+```bash
+npm run dev
+```
+This will:
+- Start the frontend with hot reloading
+- Start the backend with nodemon (auto-reloads on changes)
 
-1. Frontend should be accessible at: http://localhost:3000
-2. Backend API should be accessible at: http://localhost:5001
-3. MongoDB should be running on: mongodb://localhost:27017
+3. **Run only the seed script** (to populate/reset the database):
+```bash
+npm run seed
+```
+
+4. **Run frontend and backend separately**:
+```bash
+# Terminal 1 - Frontend
+npm run start:frontend
+
+# Terminal 2 - Backend
+npm run start:backend
+```
+
+## Available Scripts
+
+- `npm start` - Runs the complete application (frontend + backend + database seeding)
+- `npm run dev` - Runs the application in development mode with auto-reload
+- `npm run seed` - Runs only the database seed script
+- `npm run start:frontend` - Runs only the frontend
+- `npm run start:backend` - Runs only the backend (includes seeding)
+- `npm run install:all` - Installs dependencies for both frontend and backend
+- `npm run build` - Builds the frontend for production
+
+## Accessing the Application
+
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:5001](http://localhost:5001)
+- MongoDB: mongodb://localhost:27017/portfolio
 
 ## Features
 
-- Dynamic Projects Page with MongoDB integration
-- Contact Form with email functionality
-- Tech Stack showcase
-- Responsive design with TailwindCSS
-- Smooth animations with Framer Motion
-- Blog integration
+- 🎨 Modern, responsive UI with TailwindCSS
+- 🚀 Full-stack JavaScript/Node.js
+- 📊 MongoDB for data persistence
+- 📧 Contact form with email integration
+- 📱 Mobile-first design
+- ⚡ Fast page loads and smooth transitions
+- 🔄 Real-time content updates
+- 📝 Blog integration
 
 ## Troubleshooting
 
-1. If you see "Failed to fetch" error on the Projects page:
+1. **MongoDB Connection Issues**
    - Ensure MongoDB is installed and running
-   - Check if the backend server is running on port 5001
-   - Verify MongoDB connection string in .env file
+   - Check MongoDB service status in services.msc
+   - Verify connection string in .env file
 
-2. If contact form doesn't work:
-   - Verify EMAIL_USER and EMAIL_PASS in .env file
-   - Ensure you're using an app-specific password for Gmail
+2. **Email Not Working**
+   - Verify EMAIL_USER and EMAIL_PASS in .env
+   - For Gmail, use App Password instead of regular password
+   - Check spam folder for test emails
 
-3. If MongoDB fails to connect:
-   - Check if MongoDB service is running in services.msc
-   - Verify the MongoDB connection string
-   - Try restarting the MongoDB service
+3. **Port Conflicts**
+   - Frontend default port: 3000
+   - Backend default port: 5001
+   - Change in .env if needed
 
-## Project Structure
-
-```
-portfolio/
-├── src/                  # Frontend source files
-│   ├── components/       # React components
-│   ├── pages/           # Page components
-│   └── App.js           # Main App component
-├── backend/             # Backend server
-│   ├── models/          # MongoDB models
-│   ├── scripts/         # Database scripts
-│   └── server.js        # Express server
-└── public/             # Static files
-```
-
-## Additional Notes
-
-- The project uses MongoDB for storing projects and tech stack information
-- Email functionality is handled through nodemailer with Gmail SMTP
-- Frontend is built with React and uses modern features like hooks and context
-- Styling is done with TailwindCSS for responsive design
-- Animations are implemented using Framer Motion
 
 
 ## License
 
-This project is licensed under gorakh sawant.
