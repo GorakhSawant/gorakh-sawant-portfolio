@@ -1,62 +1,21 @@
 {
-  "name": "gorakh-sawant",
-  "version": "0.1.0",
+  "name": "portfolio-monorepo",
+  "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "@emailjs/browser": "^4.4.1",
-    "@react-three/drei": "^9.114.0",
-    "@react-three/fiber": "^8.17.8",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "framer-motion": "^12.0.3",
-    "react": "^18.3.1",
-    "react-circular-progressbar": "^2.1.0",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.3.0",
-    "react-intersection-observer": "^9.15.1",
-    "react-lottie": "^1.2.4",
-    "react-router-dom": "^6.26.2",
-    "react-scripts": "5.0.1",
-    "react-three-fiber": "^6.0.13",
-    "react-typed": "^2.0.12",
-    "typewriter-effect": "^2.21.0",
-    "web-vitals": "^2.1.4"
-  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "server": "node backend/server.js",
-    "dev": "concurrently \"npm run start\" \"npm run server\"",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy:netlify": "netlify deploy --prod",
-    "deploy:aws": "npm run build && node scripts/deploy-aws.js",
-    "deploy:all": "npm run deploy:netlify && npm run deploy:aws",
-    "docker:build": "docker build -t portfolio .",
-    "docker:dev": "docker-compose up app-dev",
-    "docker:prod": "docker-compose up app-prod",
-    "docker:push": "docker push your-dockerhub-username/portfolio:latest"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start",
+    "dev": "concurrently \"cd frontend && npm start\" \"cd backend && npm run dev\"",
+    "seed": "cd backend && npm run seed",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.13"
+    "concurrently": "^8.0.1"
   }
-}
+} 
