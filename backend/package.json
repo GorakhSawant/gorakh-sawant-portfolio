@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run seed && node server.js",
+    "start": "node server.js",
     "seed": "node scripts/seedProjects.js",
     "dev": "nodemon server.js"
   },
