@@ -349,7 +349,7 @@ app.post('/api/tech-stack', async (req, res) => {
     res.status(201).json(techItem);
   } catch (error) {
     res.status(500).json({ message: 'Error creating tech stack item', error: error.message });
-  }
+  }p
 });
 
 // Update tech stack item
