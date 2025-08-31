@@ -1,5 +1,5 @@
 // src/pages/Projects.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { SiReact, SiNextdotjs, SiTailwindcss, SiFirebase, SiPython, SiPhp, SiMysql, SiBootstrap } from 'react-icons/si';
@@ -85,23 +85,11 @@ const ProjectCard = ({ project }) => {
 };
 
 const Projects = () => {
-  const { projects, loading, error } = useProjects();
+  const { projects, loading, error, loadProjects } = useProjects();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-blue-400">Loading projects...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-400">Error: {error}</div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects]);
 
   return (
     <div className="min-h-screen relative overflow-hidden pt-20">
