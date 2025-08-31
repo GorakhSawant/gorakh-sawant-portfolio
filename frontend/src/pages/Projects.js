@@ -122,14 +122,30 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-24">
-          {projects.map((project) => (
-            <ProjectCard 
-              key={project._id} 
-              project={project} 
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center text-white text-xl my-10">Loading projects...</div>
+        ) : error ? (
+          <div className="text-center text-red-500 text-xl my-10">
+            Error loading projects: {error}
+            <button 
+              onClick={loadProjects} 
+              className="block mx-auto mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="text-center text-white text-xl my-10">No projects found</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-24">
+            {projects.map((project) => (
+              <ProjectCard 
+                key={project._id} 
+                project={project} 
+              />
+            ))}
+          </div>
+        )}
 
         <motion.div 
           className="text-center pb-20"
