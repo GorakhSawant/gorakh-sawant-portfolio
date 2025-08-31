@@ -79,7 +79,8 @@ const Contact = () => {
       icon: <FaLinkedin className="text-xl text-blue-400" />,
       label: 'LINKEDIN',
       value: 'linkedin.com/in/gorakh-sawant',
-      link: 'https://linkedin.com/in/gorakh-sawant'
+      link: 'https://www.linkedin.com/in/gorakhsawant/'
+      
     },
     {
       icon: <FaMapMarkerAlt className="text-xl text-blue-400" />,
