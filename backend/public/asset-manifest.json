@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/gorakh-sawant-portfolio/static/css/main.ec1ee536.css",
+    "main.js": "/gorakh-sawant-portfolio/static/js/main.ac3386c0.js",
+    "static/js/317.f3276675.chunk.js": "/gorakh-sawant-portfolio/static/js/317.f3276675.chunk.js",
+    "static/media/gorakh1.jpg": "/gorakh-sawant-portfolio/static/media/gorakh1.56afbe6a19a146d2563f.jpg",
+    "index.html": "/gorakh-sawant-portfolio/index.html",
+    "main.ec1ee536.css.map": "/gorakh-sawant-portfolio/static/css/main.ec1ee536.css.map",
+    "main.ac3386c0.js.map": "/gorakh-sawant-portfolio/static/js/main.ac3386c0.js.map",
+    "317.f3276675.chunk.js.map": "/gorakh-sawant-portfolio/static/js/317.f3276675.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec1ee536.css",
+    "static/js/main.ac3386c0.js"
+  ]
+}
