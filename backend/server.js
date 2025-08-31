@@ -262,7 +262,7 @@ app.post('/api/send-email', async (req, res) => {
           <p>// GORAKH SAWANT</p>
           <div class="social-links">
             <a href="https://github.com/gorakhsawant">GitHub</a>
-            <a href="https://linkedin.com/in/gorakh-sawant">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/gorakhsawant/">LinkedIn</a>
           </div>
         </div>
       </div>
