@@ -1,8 +1,17 @@
 services:
   - type: web
     name: portfolio-backend
-    env: node
-    buildCommand: cd backend && chmod +x build.sh && ./build.sh
+    runtime: node
+    buildCommand: |
+      # Install frontend dependencies and build
+      cd frontend
+      npm install
+      npm run build
+      # Setup backend
+      cd ../backend
+      mkdir -p public
+      cp -r ../frontend/build/* public/
+      npm install
     startCommand: cd backend && node server.js
     envVars:
       - key: NODE_ENV
