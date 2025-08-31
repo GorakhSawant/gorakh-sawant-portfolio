@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import Typewriter from 'typewriter-effect';
-import profileImage from '../assets/images/profile1.jpeg';
+import profileImage from '../assets/images/gorakh1.jpg';
 
 const AnimatedRings = () => {
   const { scrollYProgress } = useScroll();
@@ -196,7 +196,7 @@ const Home = () => {
                 <img
                   src={profileImage}
                   alt="Gorakh Sawant"
-                  className="w-[200%] h-[200%] object-cover object-center transform scale-75"
+                  className="w-full h-full object-cover object-center"
                 />
               </div>
               
