@@ -13,7 +13,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://gorakh-sawant-portfolio.onrender.com'],
+  origin: '*',  // Allow all origins temporarily for debugging
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
