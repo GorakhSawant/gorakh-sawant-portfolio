@@ -13,7 +13,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
-  origin: '*',  // Allow all origins temporarily for debugging
+  origin: ['http://localhost:3000', 'https://gorakh-sawant.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -293,8 +293,14 @@ app.post('/api/send-email', async (req, res) => {
 // Project Routes with improved error handling
 app.get('/api/projects', async (req, res) => {
   try {
-    console.log('Fetching projects...');
+    console.log('Fetching projects from MongoDB...');
+    // Check if the model is registered
+    console.log('Project model:', mongoose.modelNames().includes('Project') ? 'registered' : 'not registered');
+    // Log collection name
+    console.log('Collection name:', Project.collection.name);
+    
     const projects = await Project.find().sort({ order: 1 });
+    console.log('Raw projects data:', JSON.stringify(projects, null, 2));
     console.log(`Found ${projects.length} projects`);
     res.json(projects);
   } catch (error) {
