@@ -12,6 +12,19 @@ const app = express();
 // Serve static files from the React build directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Explicit handler for resume file
+app.get('/resume/:filename', (req, res) => {
+  const resumePath = path.join(__dirname, 'public', 'resume', req.params.filename);
+  res.sendFile(resumePath, (err) => {
+    if (err) {
+      console.error('Error sending resume file:', err);
+      res.status(err.status).end();
+    } else {
+      console.log('Resume file sent successfully');
+    }
+  });
+});
+
 app.use(cors({
   origin: ['http://localhost:3000', 'https://gorakh-sawant.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -290,7 +303,38 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-// Project Routes with improved error handling
+// Project Routes with comprehensive error handling and debugging
+app.get('/api/projects', async (req, res) => {
+  console.log('GET /api/projects - Request received');
+  
+  try {
+    // Check MongoDB connection
+    if (mongoose.connection.readyState !== 1) {
+      console.error('MongoDB not connected. Current state:', mongoose.connection.readyState);
+      throw new Error('Database connection not established');
+    }
+
+    console.log('Fetching projects from collection:', Project.collection.name);
+    
+    const projects = await Project.find({}).lean();
+    console.log(`Found ${projects.length} projects:`, JSON.stringify(projects, null, 2));
+    
+    if (!projects) {
+      console.log('No projects found');
+      return res.json([]);
+    }
+
+    res.json(projects);
+  } catch (error) {
+    console.error('Error in /api/projects:', error);
+    console.error('Stack trace:', error.stack);
+    res.status(500).json({ 
+      message: 'Error fetching projects',
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
 app.get('/api/projects', async (req, res) => {
   try {
     console.log('Fetching projects from MongoDB...');

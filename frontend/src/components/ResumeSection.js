@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaDownload, FaEye } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 
 const ResumeSection = () => {
   // Replace this URL with your actual resume URL
@@ -25,19 +25,7 @@ const ResumeSection = () => {
             Download my resume to learn more about my experience, skills, and qualifications.
           </p>
           
-          <div className="flex justify-center gap-4">
-            <motion.a
-              href={resumeUrl}
-              download
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg
-                       hover:bg-blue-700 transition-colors duration-300 font-tech-mono"
-            >
-              <FaDownload className="mr-2" />
-              Download Resume
-            </motion.a>
-            
+          <div className="flex justify-center">
             <motion.a
               href={resumeUrl}
               target="_blank"

@@ -9,6 +9,15 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  const handleNavClick = () => {
+    setIsOpen(false);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  };
+
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +54,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" onClick={handleNavClick} className="flex items-center space-x-2">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -68,6 +77,7 @@ const Navbar = () => {
               >
                 <Link
                   to={link.path}
+                  onClick={handleNavClick}
                   className={`relative text-lg font-bold transition-all duration-300 font-tech-mono tracking-wider
                     ${isActive(link.path) 
                       ? 'text-blue-400 scale-105' 
@@ -116,7 +126,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                onClick={() => setIsOpen(false)}
+                onClick={handleNavClick}
                 className={`block text-center py-3 text-lg font-bold transition-all duration-300
                   ${isActive(link.path) 
                     ? 'text-blue-400 bg-gray-800/50' 
