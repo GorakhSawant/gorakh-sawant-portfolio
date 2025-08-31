@@ -109,9 +109,9 @@ const Navbar = () => {
           initial={false}
           animate={isOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden overflow-hidden"
+          className="md:hidden overflow-hidden absolute left-0 right-0 top-full bg-gray-900/95 backdrop-blur-lg shadow-lg border-t border-gray-800"
         >
-          <div className="py-4 space-y-4">
+          <div className="py-4 space-y-2">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -119,8 +119,8 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
                 className={`block text-center py-3 text-lg font-bold transition-all duration-300
                   ${isActive(link.path) 
-                    ? 'text-blue-400 bg-white/5' 
-                    : 'text-white hover:text-blue-400 hover:bg-white/5'
+                    ? 'text-blue-400 bg-gray-800/50' 
+                    : 'text-white hover:text-blue-400 hover:bg-gray-800/50'
                   }`}
               >
                 {link.title}
