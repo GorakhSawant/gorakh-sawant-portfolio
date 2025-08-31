@@ -11,7 +11,7 @@ import Blog from './pages/Blog';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/gorakh-sawant-portfolio">
       <div className="flex flex-col min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
         <Navbar />
         <main className="flex-grow container mx-auto px-4 py-8 pt-24">
