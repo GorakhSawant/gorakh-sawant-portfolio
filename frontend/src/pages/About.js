@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaServer, FaRobot, FaDocker } from 'react-icons/fa';
 import * as SiIcons from 'react-icons/si';
+import ResumeSection from '../components/ResumeSection';
 
 const ScrollReveal = ({ children, delay = 0 }) => {
   const ref = useRef(null);
@@ -221,6 +222,11 @@ const About = () => {
             )}
           </div>
         </div>
+
+        {/* Resume Section */}
+        <ScrollReveal>
+          <ResumeSection />
+        </ScrollReveal>
       </div>
     </div>
   );
