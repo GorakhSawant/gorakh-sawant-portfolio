@@ -2,12 +2,27 @@ import API_URL from '../config';
 
 export const fetchProjects = async () => {
   try {
-    const response = await fetch(`${API_URL}/api/projects`);
-    if (!response.ok) throw new Error('Failed to fetch projects');
-    return await response.json();
+    console.log('Fetching from:', `${API_URL}/api/projects`);
+    const response = await fetch(`${API_URL}/api/projects`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Server response:', errorText);
+      throw new Error(`Failed to fetch projects: ${response.status} ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log('Projects data:', data);
+    return data;
   } catch (error) {
     console.error('Error fetching projects:', error);
-    throw error;
+    throw new Error(`Failed to fetch projects: ${error.message}`);
   }
 };
 
