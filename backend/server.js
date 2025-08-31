@@ -1,6 +1,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Project = require('./models/Project');
@@ -8,8 +9,11 @@ const TechStack = require('./models/TechStack');
 
 const app = express();
 
+// Serve static files from the React build directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(cors({
-  origin: 'http://localhost:3000', // Your React app's URL
+  origin: ['http://localhost:3000', 'https://gorakh-sawant-portfolio.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -370,6 +374,11 @@ app.delete('/api/tech-stack/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error deleting tech stack item', error: error.message });
   }
+});
+
+// Catch-all route to serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5001;
