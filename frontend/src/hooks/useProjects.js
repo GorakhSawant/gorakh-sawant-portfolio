@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchProjects, createProject, updateProject, deleteProject } from '../api/projects';
+import { useDebounce } from './useDebounce';
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -58,8 +59,39 @@ export const useProjects = () => {
     }
   };
 
+  const [refreshKey, setRefreshKey] = useState(0);
+  const debouncedRefreshKey = useDebounce(refreshKey, 1000);
+
   useEffect(() => {
-    loadProjects();
+    let mounted = true;
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchProjects(controller.signal);
+        if (mounted) {
+          setProjects(data.sort((a, b) => a.order - b.order));
+        }
+      } catch (err) {
+        if (mounted && err.name !== 'AbortError') {
+          setError(err.message);
+          console.error('Error fetching projects:', err);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      mounted = false;
+      controller.abort();
+    };
   }, []);
 
   return {

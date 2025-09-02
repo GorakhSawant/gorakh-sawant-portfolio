@@ -1,11 +1,12 @@
 {
-  "short_name": "GS Portfolio",
-  "name": "Gorakh Sawant Portfolio",
+  "short_name": "Gorakh",
+  "name": "Gorakh Sawant",
   "icons": [
     {
-      "src": "logo.svg",
+      "src": "favicon.svg",
       "type": "image/svg+xml",
-      "sizes": "any"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",

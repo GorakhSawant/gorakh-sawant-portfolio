@@ -1,17 +1,12 @@
 // src/pages/Home.js
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import Typewriter from 'typewriter-effect';
 import profileImage from '../assets/images/gorakh1.jpg';
 
 const AnimatedRings = () => {
-  const { scrollYProgress } = useScroll();
-  
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 720]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.5]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.1]);
 
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -24,12 +19,19 @@ const AnimatedRings = () => {
           style={{
             width: `${300 + i * 100}px`,
             height: `${300 + i * 100}px`,
-            rotate,
-            scale,
-            opacity,
             border: `${1 + i}px solid rgba(96, 165, 250, ${0.15 - i * 0.02})`,
             borderRadius: '50%',
             boxShadow: `0 0 ${15 + i * 5}px rgba(96, 165, 250, ${0.1 - i * 0.01})`,
+          }}
+          animate={{
+            rotate: [0, 360],
+            scale: [1, 1.05, 1],
+            opacity: [0.3, 0.2, 0.3]
+          }}
+          transition={{
+            duration: 20 + i * 5,
+            repeat: Infinity,
+            ease: "linear"
           }}
         />
       ))}
@@ -285,46 +287,6 @@ const Home = () => {
             </motion.a>
           ))}
         </motion.div>
-      </motion.div>
-
-      {/* Enhanced Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-      >
-        <motion.div
-          className="w-6 h-10 border-2 border-white/30 rounded-full p-1 relative overflow-hidden"
-          whileHover={{ scale: 1.1 }}
-        >
-          <motion.div
-            className="w-1.5 h-1.5 bg-blue-400 rounded-full mx-auto"
-            animate={{
-              y: [0, 20, 0],
-              opacity: [1, 0.5, 1],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent" />
-        </motion.div>
-        <motion.p
-          className="text-white/50 text-sm mt-2 font-tech-mono"
-          animate={{
-            opacity: [0.5, 1, 0.5]
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          Scroll
-        </motion.p>
       </motion.div>
 
       {/* Tech Stack Section */}

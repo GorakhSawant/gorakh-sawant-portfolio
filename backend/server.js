@@ -316,7 +316,8 @@ app.get('/api/projects', async (req, res) => {
 
     console.log('Fetching projects from collection:', Project.collection.name);
     
-    const projects = await Project.find({}).lean();
+    const projects = await Project.find({}).sort({ order: 1 }).lean();
+    
     console.log(`Found ${projects.length} projects:`, JSON.stringify(projects, null, 2));
     
     if (!projects) {
@@ -332,27 +333,6 @@ app.get('/api/projects', async (req, res) => {
       message: 'Error fetching projects',
       error: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    });
-  }
-});
-app.get('/api/projects', async (req, res) => {
-  try {
-    console.log('Fetching projects from MongoDB...');
-    // Check if the model is registered
-    console.log('Project model:', mongoose.modelNames().includes('Project') ? 'registered' : 'not registered');
-    // Log collection name
-    console.log('Collection name:', Project.collection.name);
-    
-    const projects = await Project.find().sort({ order: 1 });
-    console.log('Raw projects data:', JSON.stringify(projects, null, 2));
-    console.log(`Found ${projects.length} projects`);
-    res.json(projects);
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    res.status(500).json({ 
-      message: 'Error fetching projects', 
-      error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
     });
   }
 });
