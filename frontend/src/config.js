@@ -1,7 +1,7 @@
 // Backend API URL based on environment
 const API_URL = process.env.NODE_ENV === 'production'
   ? 'https://gorakh-sawant.onrender.com'  // Render backend URL
-  : 'http://localhost:5001';              // Local development URL
+  : 'http://localhost:10000';             // Local development URL
 
 // Debug logging
 console.log('Current environment:', process.env.NODE_ENV);
