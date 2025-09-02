@@ -25,20 +25,41 @@ app.get('/resume/:filename', (req, res) => {
   });
 });
 
-// CORS configuration based on environment
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [
-      'https://gorakhsawant.github.io',     // GitHub Pages
-      'https://gorakhsawant.me'             // Custom domain if you have one
-    ]
-  : ['http://localhost:3000'];              // Local development
+// Configure CORS with detailed logging
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://gorakh-sawant-portfolio.onrender.com',
+  'https://gorakh-sawant.onrender.com'
+];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function(origin, callback) {
+    console.log('Request from origin:', origin);
+    
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('Origin not allowed:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true
 }));
 app.use(express.json());
+
+// Handle OPTIONS preflight requests
+app.options('/api/projects', cors(), (req, res) => {
+  const origin = req.get('origin');
+  console.log('Handling OPTIONS preflight request from:', origin);
+  
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.status(204).send();
 
 // Add this before creating the transporter
 console.log('Email User:', process.env.EMAIL_USER);
@@ -313,26 +334,37 @@ app.post('/api/send-email', async (req, res) => {
 
 // Project Routes with comprehensive error handling and debugging
 app.get('/api/projects', async (req, res) => {
-  console.log('GET /api/projects - Request received');
+  const origin = req.get('origin');
+  console.log('GET /api/projects - Request received from:', origin);
+  
+  // Set CORS headers explicitly for this route
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
   
   try {
     // Check MongoDB connection
     if (mongoose.connection.readyState !== 1) {
       console.error('MongoDB not connected. Current state:', mongoose.connection.readyState);
-      throw new Error('Database connection not established');
+      return res.status(500).json({ 
+        message: 'Database connection not established',
+        state: mongoose.connection.readyState
+      });
     }
 
     console.log('Fetching projects from collection:', Project.collection.name);
     
     const projects = await Project.find({}).sort({ order: 1 }).lean();
     
-    console.log(`Found ${projects.length} projects:`, JSON.stringify(projects, null, 2));
+    console.log(`Found ${projects.length} projects`);
     
-    if (!projects) {
+    if (!projects || projects.length === 0) {
       console.log('No projects found');
       return res.json([]);
     }
 
+    console.log('Successfully sending projects response');
     res.json(projects);
   } catch (error) {
     console.error('Error in /api/projects:', error);
