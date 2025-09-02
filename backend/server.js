@@ -447,11 +447,17 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Use Render's PORT or fallback to 10000
-const PORT = process.env.PORT || 10000;
+// Use Render's PORT in production, fallback to 10000 in development
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 10000;
+
+// Log server configuration
+console.log('Server Configuration:');
+console.log('- Environment:', process.env.NODE_ENV);
+console.log('- Port:', PORT);
+console.log('- MongoDB URI:', process.env.MONGODB_URI ? 'Set' : 'Not Set');
+console.log('- Email Config:', process.env.EMAIL_USER ? 'Set' : 'Not Set');
 
 // Connect to MongoDB with enhanced logging
-console.log('Environment:', process.env.NODE_ENV);
 console.log('Attempting to connect to MongoDB...');
 
 mongoose.connect(process.env.MONGODB_URI)
