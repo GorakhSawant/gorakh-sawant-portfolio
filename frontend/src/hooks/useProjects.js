@@ -71,9 +71,9 @@ export const useProjects = () => {
           setProjects(data.sort((a, b) => a.order - b.order));
         }
       } catch (err) {
-        if (mounted && err.name !== 'AbortError') {
+        // Only set error for non-abort errors and when component is still mounted
+        if (err.name !== 'AbortError' && mounted) {
           setError(err.message);
-          console.error('Error fetching projects:', err);
         }
       } finally {
         if (mounted) {

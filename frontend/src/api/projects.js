@@ -23,6 +23,10 @@ export const fetchProjects = async (signal) => {
     console.log('Projects data:', data);
     return data;
   } catch (error) {
+    if (error.name === 'AbortError') {
+      // Don't log abort errors as they are expected when component unmounts
+      throw error;
+    }
     console.error('Error fetching projects:', error);
     throw new Error(`Failed to fetch projects: ${error.message}`);
   }

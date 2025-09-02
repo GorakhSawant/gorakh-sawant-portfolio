@@ -45,8 +45,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 app.use(express.json());
 
@@ -60,6 +59,7 @@ app.options('/api/projects', cors(), (req, res) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.status(204).send();
+});
 
 // Add this before creating the transporter
 console.log('Email User:', process.env.EMAIL_USER);
@@ -138,33 +138,9 @@ const initialTechStack = [
   }
 ];
 
-// Connect to MongoDB and seed data
-mongoose.connect(process.env.MONGODB_URI)
-  .then(async () => {
-    console.log('Connected to MongoDB');
-    
-    // Seed TechStack if empty
-    const techStackCount = await TechStack.countDocuments();
-    if (techStackCount === 0) {
-      try {
-        console.log('Seeding tech stack with:', initialTechStack);
-        const result = await TechStack.insertMany(initialTechStack);
-        console.log('Tech Stack seeded successfully:', result);
-      } catch (error) {
-        console.error('Error seeding tech stack:', error);
-      }
-    } else {
-      console.log(`Found ${techStackCount} existing tech stack items`);
-    }
-
-    // Check if there are any projects
-    const projectCount = await Project.countDocuments();
-    console.log(`Found ${projectCount} existing projects`);
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);  // Exit if MongoDB connection fails
-  });
+// MongoDB Connection logging
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Attempting to connect to MongoDB...');
 
 app.post('/api/send-email', async (req, res) => {
   const { name, email, message } = req.body;
