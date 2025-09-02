@@ -1,5 +1,5 @@
 // src/pages/Projects.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { SiReact, SiNextdotjs, SiTailwindcss, SiFirebase, SiPython, SiPhp, SiMysql, SiBootstrap } from 'react-icons/si';
@@ -85,14 +85,41 @@ const ProjectCard = ({ project }) => {
 };
 
 const Projects = () => {
-  const { projects, loading, error, loadProjects } = useProjects();
+  const { projects, loading, error } = useProjects();
 
-  useEffect(() => {
-    loadProjects();
-  }, [loadProjects]);
+  if (loading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-screen flex items-center justify-center"
+      >
+        <div className="text-blue-400">Loading projects...</div>
+      </motion.div>
+    );
+  }
+
+  if (error) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="min-h-screen flex items-center justify-center"
+      >
+        <div className="text-red-400">Error: {error}</div>
+      </motion.div>
+    );
+  }
 
   return (
-    <div className="min-h-screen relative overflow-hidden pt-20">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen relative overflow-hidden pt-20"
+    >
       <div className="fixed inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-30" />
       <div className="fixed inset-0 grid-pattern opacity-25" />
       
@@ -110,19 +137,7 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {loading ? (
-          <div className="text-center text-white text-xl my-10">Loading projects...</div>
-        ) : error ? (
-          <div className="text-center text-red-500 text-xl my-10">
-            Error loading projects: {error}
-            <button 
-              onClick={loadProjects} 
-              className="block mx-auto mt-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
-            >
-              Try Again
-            </button>
-          </div>
-        ) : projects.length === 0 ? (
+        {projects.length === 0 ? (
           <div className="text-center text-white text-xl my-10">No projects found</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-24">
@@ -154,7 +169,7 @@ const Projects = () => {
           </a>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

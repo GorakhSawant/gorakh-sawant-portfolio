@@ -1,14 +1,14 @@
 import API_URL from '../config';
 
-export const fetchProjects = async () => {
+export const fetchProjects = async (signal) => {
   try {
-    console.log('Fetching from:', `${API_URL}/api/projects`);
     const response = await fetch(`${API_URL}/api/projects`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }
+      },
+      signal
     });
     
     if (!response.ok) {
