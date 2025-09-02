@@ -2,12 +2,14 @@ import API_URL from '../config';
 
 export const fetchProjects = async (signal) => {
   try {
+    console.log('Fetching projects from:', `${API_URL}/api/projects`);
     const response = await fetch(`${API_URL}/api/projects`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
+      credentials: 'include',  // Include credentials in the request
       signal
     });
     
