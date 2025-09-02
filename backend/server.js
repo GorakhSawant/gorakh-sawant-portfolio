@@ -29,18 +29,33 @@ app.get('/resume/:filename', (req, res) => {
 const allowedOrigins = [
   'http://localhost:3000',
   'https://gorakh-sawant-portfolio.onrender.com',
-  'https://gorakh-sawant.onrender.com'
+  'https://gorakh-sawant.onrender.com',
+  'https://gorakh-sawant.github.io'
 ];
+
+// Log configuration details
+console.log('CORS Allowed Origins:', allowedOrigins);
+console.log('Current NODE_ENV:', process.env.NODE_ENV);
 
 app.use(cors({
   origin: function(origin, callback) {
     console.log('Request from origin:', origin);
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
     
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       console.log('Origin not allowed:', origin);
-      callback(new Error('Not allowed by CORS'));
+      // Return true for all origins in development
+      if (process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     }
   },
   credentials: true,
@@ -60,6 +75,11 @@ app.options('/api/projects', cors(), (req, res) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   res.status(204).send();
 });
+
+app.use(express.json());
+
+// Handle OPTIONS requests for all routes
+app.options('*', cors());
 
 // Add this before creating the transporter
 console.log('Email User:', process.env.EMAIL_USER);
