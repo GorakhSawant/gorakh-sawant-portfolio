@@ -25,8 +25,16 @@ app.get('/resume/:filename', (req, res) => {
   });
 });
 
+// CORS configuration based on environment
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? [
+      'https://gorakhsawant.github.io',     // GitHub Pages
+      'https://gorakhsawant.me'             // Custom domain if you have one
+    ]
+  : ['http://localhost:3000'];              // Local development
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://gorakh-sawant.onrender.com'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -414,15 +422,33 @@ app.get('*', (req, res) => {
 // Use Render's PORT or fallback to 10000
 const PORT = process.env.PORT || 10000;
 
-// Connect to MongoDB
+// Connect to MongoDB with enhanced logging
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Attempting to connect to MongoDB...');
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log('Successfully connected to MongoDB');
+    console.log('Database:', mongoose.connection.name);
+    console.log('Host:', mongoose.connection.host);
+    
     // Start the server after successful MongoDB connection
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      console.log('Available endpoints:');
+      console.log(`- GET ${process.env.NODE_ENV === 'production' ? 'https://gorakh-sawant.onrender.com' : `http://localhost:${PORT}`}/api/projects`);
+      console.log(`- GET ${process.env.NODE_ENV === 'production' ? 'https://gorakh-sawant.onrender.com' : `http://localhost:${PORT}`}/api/tech-stack`);
     });
   })
   .catch((error) => {
-    console.error('MongoDB connection error:', error);
+    console.error('MongoDB connection error:', {
+      name: error.name,
+      message: error.message,
+      code: error.code
+    });
+    // Exit if MongoDB connection fails in production
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Exiting due to MongoDB connection failure in production');
+      process.exit(1);
+    }
   });
