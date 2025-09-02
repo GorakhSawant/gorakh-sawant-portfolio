@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchProjects, createProject, updateProject, deleteProject } from '../api/projects';
-import { useDebounce } from './useDebounce';
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -59,9 +58,6 @@ export const useProjects = () => {
     }
   };
 
-  const [refreshKey, setRefreshKey] = useState(0);
-  const debouncedRefreshKey = useDebounce(refreshKey, 1000);
-
   useEffect(() => {
     let mounted = true;
     const controller = new AbortController();
@@ -94,11 +90,16 @@ export const useProjects = () => {
     };
   }, []);
 
+  // Force refresh projects
+  const refreshProjects = () => {
+    loadProjects();
+  };
+
   return {
     projects,
     loading,
     error,
-    loadProjects,
+    refreshProjects,
     addProject,
     editProject,
     removeProject
