@@ -25,23 +25,46 @@ app.get('/resume/:filename', (req, res) => {
   });
 });
 
-// Configure CORS with detailed logging
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://gorakh-sawant-portfolio.onrender.com',
-  'https://gorakh-sawant.onrender.com',
-  'https://gorakh-sawant.github.io'
-];
-
-// Log configuration details
-console.log('CORS Allowed Origins:', allowedOrigins);
-console.log('Current NODE_ENV:', process.env.NODE_ENV);
-
-app.use(cors({
+// Configure CORS
+const corsOptions = {
   origin: function(origin, callback) {
     console.log('Request from origin:', origin);
-    // Allow requests with no origin (like mobile apps or curl requests)
+    
+    if (process.env.NODE_ENV === 'development') {
+      // In development, allow all origins
+      callback(null, true);
+      return;
+    }
+    
+    // In production, only allow specific origins
+    const allowedOrigins = [
+      'https://gorakh-sawant-portfolio.onrender.com',
+      'https://gorakh-sawant.onrender.com'
+    ];
+    
     if (!origin) {
+      // Allow requests with no origin
+      callback(null, true);
+      return;
+    }
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, origin);
+    } else {
+      console.log('Origin not allowed:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
+};
+
+// Apply CORS configuration
+app.use(cors(corsOptions));
+
+// Enable pre-flight requests for all routes
+app.options('*', cors(corsOptions));
       callback(null, true);
       return;
     }
@@ -403,10 +426,21 @@ app.delete('/api/projects/:id', async (req, res) => {
 
 // Get all tech stack items
 app.get('/api/tech-stack', async (req, res) => {
+  const origin = req.get('origin');
+  console.log('GET /api/tech-stack - Request received from:', origin);
+  
+  // Set CORS headers explicitly for this route
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+
   try {
     const techStack = await TechStack.find().sort({ order: 1 });
+    console.log(`Found ${techStack.length} tech stack items`);
     res.json(techStack);
   } catch (error) {
+    console.error('Error fetching tech stack:', error);
     res.status(500).json({ message: 'Error fetching tech stack', error: error.message });
   }
 });
@@ -462,9 +496,16 @@ console.log('Attempting to connect to MongoDB...');
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('Successfully connected to MongoDB');
-    console.log('Database:', mongoose.connection.name);
-    console.log('Host:', mongoose.connection.host);
+    console.log('Server Configuration:');
+    console.log('- Environment:', process.env.NODE_ENV);
+    console.log('- Port:', PORT);
+    console.log('- Frontend URL:', process.env.NODE_ENV === 'production' 
+      ? 'https://gorakh-sawant-portfolio.onrender.com' 
+      : 'http://localhost:3000');
+    console.log('\nMongoDB Connection:');
+    console.log('- Status: Connected');
+    console.log('- Database:', mongoose.connection.name);
+    console.log('- Host:', mongoose.connection.host);
     
     // Start the server after successful MongoDB connection
     app.listen(PORT, () => {

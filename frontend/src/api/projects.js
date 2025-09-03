@@ -9,7 +9,6 @@ export const fetchProjects = async (signal) => {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      credentials: 'include',  // Include credentials in the request
       signal
     });
     
