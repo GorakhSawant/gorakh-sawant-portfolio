@@ -2,8 +2,12 @@ import API_URL from '../config';
 
 export const fetchProjects = async (signal) => {
   try {
-    console.log('Fetching projects from:', `${API_URL}/api/projects`);
-    const response = await fetch(`${API_URL}/api/projects`, {
+    const url = `${API_URL}/api/projects`;
+    console.log('Fetching projects from:', url);
+    console.log('API_URL:', API_URL);
+    console.log('Environment:', process.env.NODE_ENV);
+    
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -12,15 +16,17 @@ export const fetchProjects = async (signal) => {
       signal
     });
     
+    console.log('Response status:', response.status);
+    
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Server response:', errorText);
       throw new Error(`Failed to fetch projects: ${response.status} ${response.statusText}`);
     }
     
-    const data = await response.json();
-    console.log('Projects data:', data);
-    return data;
+    const projects = await response.json();
+    console.log('Fetched projects:', projects);
+    return projects;
   } catch (error) {
     if (error.name === 'AbortError') {
       // Don't log abort errors as they are expected when component unmounts
