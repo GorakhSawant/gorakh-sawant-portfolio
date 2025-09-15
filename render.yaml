@@ -9,8 +9,9 @@ services:
       npm run build
       # Setup backend
       cd ../backend
-      mkdir -p public
+      mkdir -p public/resume
       cp -r ../frontend/build/* public/
+      cp -r ../frontend/public/resume/* public/resume/
       npm install
     startCommand: cd backend && node server.js
     envVars:

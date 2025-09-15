@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { FaEye } from 'react-icons/fa';
 
 const ResumeSection = () => {
-  // Replace this URL with your actual resume URL
-  const resumeUrl = '/resume/Gorakh_Sawant_Resume_2025.pdf';
+  // Resume URL
+  const resumeUrl = '/resume/Gorakh_Sawant_Resume_9309824107.pdf';
 
   return (
     <motion.div
