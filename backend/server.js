@@ -333,7 +333,11 @@ app.get('/api/projects', async (req, res) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
   
   try {
-    // Check MongoDB connection
+    // Check MongoDB connection and log details
+    console.log('MongoDB Connection State:', mongoose.connection.readyState);
+    console.log('MongoDB Database Name:', mongoose.connection.name);
+    console.log('MongoDB Host:', mongoose.connection.host);
+    
     if (mongoose.connection.readyState !== 1) {
       console.error('MongoDB not connected. Current state:', mongoose.connection.readyState);
       return res.status(500).json({ 

@@ -301,7 +301,7 @@ const Home = () => {
           Tech Stack
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {['Python', 'JavaScript', 'React', 'Node.js'].map((tech, index) => (
+          {['Python', 'Java', 'React', 'MongoDB', 'Robot Framework', 'Pytest', 'API Automation', 'UI Automation'].map((tech, index) => (
             <motion.div
               key={tech}
               className="backdrop-blur-lg bg-white/10 p-4 rounded-xl text-center"

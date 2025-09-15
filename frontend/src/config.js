@@ -1,7 +1,7 @@
 // Backend API URL based on environment
 const API_URL = process.env.NODE_ENV === 'production'
-  ? ''  // Empty string for same-origin requests in production
-  : 'http://localhost:10000';             // Local development URL
+  ? 'https://gorakh-sawant-portfolio.onrender.com'  // Production URL
+  : 'http://localhost:10000';                       // Local development URL
 
 // Debug logging
 console.log('Frontend Configuration:');
