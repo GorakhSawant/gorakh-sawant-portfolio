@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: portfolio-backend
+    name: gorakh-sawant-portfolio
     runtime: node
     buildCommand: |
       # Install frontend dependencies and build
