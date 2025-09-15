@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaServer, FaRobot, FaDocker } from 'react-icons/fa';
+import API_URL from '../config';
 import * as SiIcons from 'react-icons/si';
 import ResumeSection from '../components/ResumeSection';
 
@@ -99,13 +100,21 @@ const About = () => {
   useEffect(() => {
     const fetchTechStack = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/tech-stack');
+        const response = await fetch(`${API_URL}/api/tech-stack`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           console.log('Fetched tech stack (detailed):', JSON.stringify(data, null, 2));
           setTechStack(data);
         } else {
-          console.error('Failed to fetch tech stack');
+          console.error('Failed to fetch tech stack:', response.status, response.statusText);
+          const text = await response.text();
+          console.error('Response body:', text);
         }
       } catch (error) {
         console.error('Error fetching tech stack:', error);
