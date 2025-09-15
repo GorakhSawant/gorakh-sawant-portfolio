@@ -30,26 +30,16 @@ const corsOptions = {
   origin: function(origin, callback) {
     console.log('Request from origin:', origin);
     
-    if (process.env.NODE_ENV === 'development') {
-      // In development, allow all origins
-      callback(null, true);
-      return;
-    }
-    
-    // In production, only allow specific origins
     const allowedOrigins = [
-      'https://gorakh-sawant-portfolio.onrender.com',
-      'https://gorakh-sawant.onrender.com'
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:10000',
+      'https://gorakh-sawant.onrender.com',
+      'https://gorakh-sawant-portfolio.onrender.com'
     ];
     
-    if (!origin) {
-      // Allow requests with no origin
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
-      return;
-    }
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, origin);
     } else {
       console.log('Origin not allowed:', origin);
       callback(new Error('Not allowed by CORS'));
@@ -65,26 +55,6 @@ app.use(cors(corsOptions));
 
 // Enable pre-flight requests for all routes
 app.options('*', cors(corsOptions));
-      callback(null, true);
-      return;
-    }
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log('Origin not allowed:', origin);
-      // Return true for all origins in development
-      if (process.env.NODE_ENV === 'development') {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
-}));
 app.use(express.json());
 
 // Handle OPTIONS preflight requests
